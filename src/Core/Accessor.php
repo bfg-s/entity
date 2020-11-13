@@ -1,0 +1,190 @@
+<?php
+
+namespace Bfg\Entity\Core;
+
+use Exception;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\Relation;
+
+/**
+ * Class Accessor
+ *
+ * @package Bfg\Entity\Core
+ */
+class Accessor {
+    
+    /**
+     * @var array|object|string
+     */
+    private $subject;
+
+    /**
+     * Accessor constructor.
+     *
+     * @param array|object|string $subject
+     */
+    public function __construct($subject)
+    {
+        if (is_array($subject) || is_object($subject)) {
+
+            $this->subject = $subject;
+        }
+
+        else if (is_string($subject)) {
+
+            $this->subject = new $subject;
+        }
+    }
+
+    /**
+     * @param array|object|string $subject
+     * @return Accessor
+     */
+    public static function create($subject)
+    {
+        return new static($subject);
+    }
+
+    /**
+     * [ ==|=|is  (VALUE)] = where('name', '=', 'value')
+     * [ <=       (VALUE)] = where('name', '<=', 'value')
+     * [ >=       (VALUE)] = where('name', '>=', 'value')
+     * [ <        (VALUE)] = where('name', '<', 'value')
+     * [ >        (VALUE)] = where('name', '>', 'value')
+     * [ !=|not   (VALUE)] = where('name', '!=', 'value')
+     * [ %%|like  (VALUE)] = where('name', 'like', '%value%')
+     * [ %|%like  (VALUE)] = where('name', 'like', '%value')
+     * [ !%|like% (VALUE)] = where('name', 'like', 'value%')
+     * [ in       (VALUE)] = whereIn('name', explode(';', 'value;value...'))
+     * [ not in   (VALUE)] = whereNotIn('name', explode(';', 'value;value...'))
+     * [ not null (VALUE)] = whereNotNull('name')
+     * [ null     (VALUE)] = whereNull('name')
+     *
+     * @param array $instructions
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Relations\Relation
+     */
+    public function eloquentInstruction(array $instructions)
+    {
+        if (
+            $this->subject instanceof Builder ||
+            $this->subject instanceof Relation ||
+            $this->subject instanceof Model
+        ) {
+            foreach ($instructions as $name => $instruction) {
+
+                if (is_embedded_call($instruction)) {
+
+                    $result = call_user_func($instruction, $this->subject);
+
+                    if ($result) {
+
+                        $this->subject = $result;
+                    }
+                }
+
+                else if (preg_match('/^\s*([\=\=]{2}|[\=]|[\<\=]{2}|[\>\=]{2}|[\<]|[\>]|[\!\=]{2}|[\!\%]{2}|[\%]like|like[\%]|[\%\%]{2}|[\%]|in|not\sin|not\snull|not|null|like|is|)\s*(.*)/', $instruction, $match)) {
+
+                    $option = $match[1];
+
+                    $value = $match[2];
+
+                    if (empty($option)) { $option = '='; }
+                    if ($option == '==') { $option = '='; }
+                    if ($option == 'is') { $option = '='; }
+                    if ($option == 'not') { $option = '!='; }
+                    if ($option == 'like') { $option = '%%'; }
+                    if ($option == 'like%') { $option = '!%'; }
+                    if ($option == '%like') { $option = '%'; }
+
+                    if ($option == '=' || $option == '<=' || $option == '>=' || $option == '<' || $option == '>' || $option == '!=') {
+
+                        $this->subject = $this->subject->where($name, $option, $value);
+                    }
+
+                    else if ($option == '%%') {
+
+                        $this->subject = $this->subject->where($name, 'like', "%{$value}%");
+                    }
+
+                    else if ($option == '%') {
+
+                        $this->subject = $this->subject->where($name, 'like', "%{$value}");
+                    }
+
+                    else if ($option == '!%') {
+
+                        $this->subject = $this->subject->where($name, 'like', "{$value}%");
+                    }
+
+                    else if ($option == 'in') {
+
+                        $this->subject = $this->subject->whereIn($name, explode(';', $value));
+                    }
+
+                    else if ($option == 'not in') {
+
+                        $this->subject = $this->subject->whereNotIn($name, explode(';', $value));
+                    }
+
+                    else if ($option == 'not null') {
+
+                        $this->subject = $this->subject->whereNotNull($name);
+                    }
+
+                    else if ($option == 'not null') {
+
+                        $this->subject = $this->subject->whereNull($name);
+                    }
+                }
+            }
+        }
+
+        return $this->subject;
+    }
+
+    /**
+     * @param string $path
+     * @return null|mixed
+     */
+    public function dotCall(string $path)
+    {
+        $split = explode(".", $path);
+
+        foreach ($split as $item) {
+
+            try {
+
+                if ($this->subject instanceof \Illuminate\Support\Collection) {
+
+                    $this->subject = $this->subject->get($item);
+                }
+
+                else if (is_object($this->subject)) {
+
+                    try {
+                        $this->subject = $this->subject->{$item};
+                    } catch (Exception $exception) {
+                        $this->subject = $this->subject->{$item}();
+                    }
+                }
+
+                else if (is_array($this->subject)) {
+
+                    $this->subject = $this->subject[$item];
+                }
+
+                if ($this->subject === null) {
+
+                    return null;
+                }
+
+            } catch (Exception $exception) {
+
+                return null;
+            }
+        }
+
+        return $this->subject;
+    }
+}

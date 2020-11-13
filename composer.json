@@ -1,0 +1,37 @@
+{
+    "name": "bfg/entity",
+    "description": "Bfg Entity Carrier",
+    "type": "bfg-script",
+    "keywords": ["bfg", "entity", "carrier", "script"],
+    "homepage": "https://github.com/bfg-s/entity",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "bfg",
+            "email": "bfg.script@gmail.com"
+        }
+    ],
+    "prefer-stable": true,
+    "require": {
+        "php": ">=7.4.0"
+    },
+    "require-dev": {},
+    "autoload": {
+        "psr-4": {
+            "Bfg\\Entity\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Bfg\\Entity\\ServiceProvider"
+            ],
+            "aliases": {
+                "EntityCarrier": "Bfg\\Entity\\Facade"
+            }
+        }
+    }
+}
