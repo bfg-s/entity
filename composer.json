@@ -1,6 +1,6 @@
 {
     "name": "bfg/entity",
-    "description": "Bfg Entity Carrier",
+    "description": "Pattern for generating php entities.",
     "type": "bfg-script",
     "keywords": ["bfg", "entity", "script"],
     "homepage": "https://github.com/bfg-s/entity",
