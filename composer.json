@@ -2,7 +2,7 @@
     "name": "bfg/entity",
     "description": "Bfg Entity Carrier",
     "type": "bfg-script",
-    "keywords": ["bfg", "entity", "carrier", "script"],
+    "keywords": ["bfg", "entity", "script"],
     "homepage": "https://github.com/bfg-s/entity",
     "license": "MIT",
     "authors": [
