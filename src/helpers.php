@@ -9,6 +9,25 @@ use Bfg\Entity\Core\Entities\NamespaceEntity;
 use Bfg\Entity\Core\Entities\ParamEntity;
 use Bfg\Entity\Core\EntityPhp;
 
+if (!function_exists('array_export')) {
+
+    /**
+     * @param $expression
+     * @return string
+     */
+    function array_export($expression) {
+        $export = var_export($expression, TRUE);
+        $patterns = [
+            "/array \(/" => '[',
+            "/^([ ]*)\)(,?)$/m" => '$1]$2',
+            "/=>[ ]?\n[ ]+\[/" => '=> [',
+            "/([ ]*)(\'[^\']+\') => ([\[\'])/" => '$1$2 => $3',
+        ];
+        $export = preg_replace(array_keys($patterns), array_values($patterns), $export);
+        return $export;
+    }
+}
+
 if (!function_exists('entity')) {
 
     /**
