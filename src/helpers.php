@@ -9,6 +9,18 @@ use Bfg\Entity\Core\Entities\NamespaceEntity;
 use Bfg\Entity\Core\Entities\ParamEntity;
 use Bfg\Entity\Core\EntityPhp;
 
+if (!function_exists('class_in_file')) {
+
+    /**
+     * @param  string  $file
+     * @return string|null
+     */
+    function class_in_file (string $file) {
+
+        return (new \Bfg\Entity\ClassGetter())->getClassFullNameFromFile($file);
+    }
+}
+
 if (!function_exists('array_export')) {
 
     /**
