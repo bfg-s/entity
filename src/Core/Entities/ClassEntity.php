@@ -214,7 +214,7 @@ class ClassEntity extends Entity
         if ($this->auto_use && preg_match('/^([A-Za-z][A-Za-z\\\\]+)\\\\([A-Za-z]+)$/', $object, $matches)) {
 
             $this->use($object);
-            
+
             $object = $matches[2];
         }
 
@@ -249,7 +249,7 @@ class ClassEntity extends Entity
         if ($this->auto_use && preg_match('/^([A-Za-z][A-Za-z\\\\]+)\\\\([A-Za-z]+)$/', $implement, $matches)) {
 
             $this->use($implement);
-            
+
             $implement = $matches[2];
         }
 
@@ -269,7 +269,7 @@ class ClassEntity extends Entity
         if ($this->auto_use && preg_match('/^([A-Za-z][A-Za-z\\\\]+)\\\\([A-Za-z]+)$/', $trait, $matches)) {
 
             $this->use($trait);
-            
+
             $trait = $matches[2];
         }
 
@@ -454,7 +454,8 @@ class ClassEntity extends Entity
         }
 
         foreach ($this->const as $n_const => $const) {
-            $data .= "const {$n_const}" . ($const !== ClassPropertyEntity::NONE_PARAM ? " = {$const};":";") . $this->eol() . $this->eol();
+
+            $data .= $spaces . "const {$n_const}" . ($const !== ClassPropertyEntity::NONE_PARAM ? " = {$const};":";") . $this->eol() . $this->eol();
         }
 
         foreach ($this->props as $prop) {
