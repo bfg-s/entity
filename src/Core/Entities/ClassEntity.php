@@ -455,7 +455,7 @@ class ClassEntity extends Entity
 
         foreach ($this->const as $n_const => $const) {
 
-            $data .= $spaces . "const {$n_const}" . ($const !== ClassPropertyEntity::NONE_PARAM ? " = {$const};":";") . $this->eol() . $this->eol();
+            $data .= $spaces . str_repeat(" ", 4) . "const {$n_const}" . ($const !== ClassPropertyEntity::NONE_PARAM ? " = {$const};":";") . $this->eol() . $this->eol();
         }
 
         foreach ($this->props as $prop) {
