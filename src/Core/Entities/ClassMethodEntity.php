@@ -407,7 +407,8 @@ class ClassMethodEntity extends Entity
             $data .= $this->doc->render() . $this->eol();
         }
 
-        $data .= $spaces.$this->modifiers . " function " . $this->name . "(" . implode(", ", $this->parameters) . ")". ($this->returnType ? ": " . $this->returnType : "") ." {";
+        $data .= $spaces.$this->modifiers . " function " . $this->name . "(" . implode(", ", $this->parameters) . ")". ($this->returnType ? ": " . $this->returnType : "") . $this->eol();
+        $data .= $spaces."{";
 
         if ($this->data) {
 
