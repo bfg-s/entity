@@ -10,12 +10,11 @@ use Bfg\Entity\Core\Entity;
  */
 class JsClassEntity extends Entity {
 
-
     /**
      * @inheritDoc
      */
     protected function build(): string
     {
-        // TODO: Implement build() method.
+
     }
 }

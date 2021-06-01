@@ -19,11 +19,11 @@ class ObjectMode extends Mode
 
     public function getHavingData(): string
     {
-        // TODO: Implement getHavingData() method.
+
     }
 
     protected function insert(string $data, string $origin, string $file_data): string
     {
-        // TODO: Implement insert() method.
+
     }
 }
