@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
  * @package Bfg\Entity\Core
  */
 class Accessor {
-    
+
     /**
      * @var array|object|string
      */
@@ -73,7 +73,7 @@ class Accessor {
         ) {
             foreach ($instructions as $name => $instruction) {
 
-                if (is_embedded_call($instruction)) {
+                if ($instruction instanceof \Closure) {
 
                     $result = call_user_func($instruction, $this->subject);
 

@@ -28,7 +28,7 @@ trait HaveDocumentatorEntity {
             $this->doc = $call;
         }
 
-        else if (is_embedded_call($call)) {
+        else if ($call instanceof \Closure) {
 
             if (!$this->doc) {
 
