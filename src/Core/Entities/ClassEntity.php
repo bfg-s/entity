@@ -123,7 +123,7 @@ class ClassEntity extends Entity
 
             $this->methods[$name] = new ClassMethodEntity($name, $this);
 
-            if (is_embedded_call($call)) {
+            if ($call instanceof \Closure) {
 
                 call_user_func($call, $this->methods[$name]);
 
@@ -173,7 +173,7 @@ class ClassEntity extends Entity
 
             $prop = new ClassPropertyEntity($name);
 
-            if (is_embedded_call($value)) {
+            if ($value instanceof \Closure) {
 
                 call_user_func($value, $prop);
 
