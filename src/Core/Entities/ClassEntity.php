@@ -460,7 +460,7 @@ class ClassEntity extends Entity
 
             if (is_array($const)) {
 
-                $const = array_entity($const)->setLevel($this->level)->render();
+                $const = array_entity($const)->setLevel($this->level+4)->render();
             }
 
             $data .= $spaces . str_repeat(" ", 4) . "const {$n_const}" . ($const !== ClassPropertyEntity::NONE_PARAM ? " = {$const};":";") . $this->eol() . $this->eol();
