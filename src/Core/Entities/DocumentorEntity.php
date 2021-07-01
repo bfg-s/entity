@@ -502,15 +502,18 @@ class DocumentorEntity extends Entity
         $spaces = $this->space();
         $begin = $spaces." * ";
         $data = $spaces."/**" . $this->eol();
+        $has = false;
 
         if ($this->doc_name) {
 
             $data .= $begin . $this->doc_name . $this->eol();
+            $has = true;
         }
 
         if ($this->doc_description) {
 
             $data .= $begin . $this->doc_description . $this->eol();
+            $has = true;
         }
 
         foreach ($this->docs as $tag => $docers) {
@@ -518,10 +521,11 @@ class DocumentorEntity extends Entity
             foreach ($docers as $docer) {
 
                 $data .= $begin . "@" . $tag . " " . $docer . $this->eol();
+                $has = true;
             }
         }
         $data .= $spaces." */";
 
-        return $data;
+        return $has ? $data : "";
     }
 }
