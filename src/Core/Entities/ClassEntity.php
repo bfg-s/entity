@@ -439,7 +439,10 @@ class ClassEntity extends Entity
 
             $this->doc->setLevel($this->level);
 
-            $data .= $this->doc->render() . $this->eol();
+            if ($d = $this->doc->render()) {
+
+                $data .= $d . $this->eol();
+            }
         }
 
         $data .= $spaces . $this->modifiers . " " . $this->name .
