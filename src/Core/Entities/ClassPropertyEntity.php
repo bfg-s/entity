@@ -138,7 +138,10 @@ class ClassPropertyEntity extends Entity
 
             $this->doc->setLevel($this->level);
 
-            $data .= $this->doc->render() . $this->eol();
+            if ($d = $this->doc->render()) {
+
+                $data .= $d . $this->eol();
+            }
         }
 
         $sp = self::NONE_PARAM != $this->value;
