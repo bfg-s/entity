@@ -162,16 +162,23 @@ class Accessor {
 
                 else if (is_object($this->subject)) {
 
-                    try {
-                        $this->subject = $this->subject->{$item};
-                    } catch (Exception $exception) {
-                        $this->subject = $this->subject->{$item}();
+                    if (
+                        $this->subject instanceof Model &&
+                        method_exists($this->subject, 'getTranslations')
+                    ) {
+                        $this->subject = $this->subject->getTranslations($item);
+                    } else {
+                        try {
+                            $this->subject = $this->subject->{$item};
+                        } catch (Exception $exception) {
+                            $this->subject = $this->subject->{$item}();
+                        }
                     }
                 }
 
                 else if (is_array($this->subject)) {
 
-                    $this->subject = $this->subject[$item];
+                    $this->subject = $this->subject[$item] ?? null;
                 }
 
                 if ($this->subject === null) {
