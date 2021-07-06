@@ -144,10 +144,11 @@ class Accessor {
     }
 
     /**
-     * @param string $path
+     * @param  string  $path
+     * @param  bool  $locale
      * @return null|mixed
      */
-    public function dotCall(string $path)
+    public function dotCall(string $path, bool $locale = false)
     {
         $split = explode(".", $path);
 
@@ -163,6 +164,7 @@ class Accessor {
                 else if (is_object($this->subject)) {
 
                     if (
+                        !$locale &&
                         $this->subject instanceof Model &&
                         method_exists($this->subject, 'getTranslations') &&
                         method_exists($this->subject, 'isTranslatableAttribute')

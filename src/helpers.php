@@ -222,11 +222,12 @@ if (!function_exists('multi_dot_call')) {
     /**
      * @param $obj
      * @param  string  $dot_path
+     * @param  bool  $locale
      * @return mixed|null
      */
-    function multi_dot_call($obj, string $dot_path)
+    function multi_dot_call($obj, string $dot_path, bool $locale = false)
     {
-        return \Bfg\Entity\Core\Accessor::create($obj)->dotCall($dot_path);
+        return \Bfg\Entity\Core\Accessor::create($obj)->dotCall($dot_path, $locale);
     }
 }
 
