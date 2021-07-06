@@ -164,9 +164,18 @@ class Accessor {
 
                     if (
                         $this->subject instanceof Model &&
-                        method_exists($this->subject, 'getTranslations')
+                        method_exists($this->subject, 'getTranslations') &&
+                        method_exists($this->subject, 'isTranslatableAttribute')
                     ) {
-                        $this->subject = $this->subject->getTranslations($item);
+                        if ($this->subject->isTranslatableAttribute($item)) {
+                            $this->subject = $this->subject->getTranslations($item);
+                        } else {
+                            try {
+                                $this->subject = $this->subject->{$item};
+                            } catch (Exception $exception) {
+                                $this->subject = $this->subject->{$item}();
+                            }
+                        }
                     } else {
                         try {
                             $this->subject = $this->subject->{$item};
