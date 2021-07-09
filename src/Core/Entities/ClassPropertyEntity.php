@@ -97,7 +97,7 @@ class ClassPropertyEntity extends Entity
     /**
      * Auto doc
      */
-    private function autoDoc()
+    public function autoDoc()
     {
         $this->doc(function (DocumentorEntity $doc) {
 

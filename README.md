@@ -1,0 +1,1 @@
+# EntityThe essence of the package is to provide a more flexible way to generate the PHP entities such as classes and arrays.Also, the package provides complete freedom of data action in the specified location.
