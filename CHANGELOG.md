@@ -1,1 +1,1 @@
-# ChangelogAll notable changes to this project will be documented in this file.## [1.2.0] - 2021-07-09### Added## [1.0.0] - 2021-05-22### Added- License mit.- Readme documentation file.- Initial functionality of the package.
+# ChangelogAll notable changes to this project will be documented in this file.## [1.0.1] - 2021-07-13### Added- Translated to the support of the installer.## [1.0.0] - 2021-05-22### Added- License mit.- Readme documentation file.- Initial functionality of the package.

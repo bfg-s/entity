@@ -2,64 +2,44 @@
 
 namespace Bfg\Entity;
 
-use Illuminate\Support\ServiceProvider as ServiceProviderIlluminate;
+use Bfg\Installer\Providers\InstalledProvider;
 
 /**
  * Class ServiceProvider
  * @package Bfg\Entity
  */
-class ServiceProvider extends ServiceProviderIlluminate
+class ServiceProvider extends InstalledProvider
 {
     /**
-     * @var array
+     * The description of extension.
+     * @var string|null
      */
-    protected $commands = [
-
-    ];
+    public ?string $description = "Generator PHP code";
 
     /**
-     * The application's route middleware.
-     *
-     * @var array
+     * Set as installed by default.
+     * @var bool
      */
-    protected $routeMiddleware = [
-
-    ];
+    public bool $installed = true;
 
     /**
-     * Bootstrap services.
-     *
+     * Executed when the provider is registered
+     * and the extension is installed.
      * @return void
-     * @throws \Exception
      */
-    public function boot()
+    function installed(): void
     {
-
+        // TODO: Implement installed() method.
     }
 
     /**
-     * Register services.
-     *
+     * Executed when the provider run method
+     * "boot" and the extension is installed.
      * @return void
      */
-    public function register()
+    function run(): void
     {
-        $this->registerRouteMiddleware();
-        $this->commands($this->commands);
-    }
-
-    /**
-     * Register the route middleware.
-     *
-     * @return void
-     */
-    protected function registerRouteMiddleware()
-    {
-        // register route middleware.
-        foreach ($this->routeMiddleware as $key => $middleware) {
-
-            app('router')->aliasMiddleware($key, $middleware);
-        }
+        // TODO: Implement run() method.
     }
 }
 
