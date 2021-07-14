@@ -410,7 +410,7 @@ class ClassMethodEntity extends Entity
             }
         }
 
-        $data .= $spaces.$this->modifiers . " function " . $this->name . "(" . implode(", ", $this->parameters) . ")". ($this->returnType ? ": " . $this->returnType : "") . $this->eol();
+        $data .= $spaces.$this->modifiers . " function " . $this->name . "(" . implode(", ", $this->parameters) . ")". ($this->returnType ? " : " . $this->returnType : "") . $this->eol();
         $data .= $spaces."{";
 
         if ($this->data) {
