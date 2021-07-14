@@ -1,13 +1,16 @@
 <?php
 
+use Bfg\Entity\ClassGetter;
 use Bfg\Entity\Core\Entities\ArrayEntity;
 use Bfg\Entity\Core\Entities\ClassEntity;
 use Bfg\Entity\Core\Entities\ClassMethodEntity;
 use Bfg\Entity\Core\Entities\ClassPropertyEntity;
 use Bfg\Entity\Core\Entities\DocumentorEntity;
+use Bfg\Entity\Core\Entities\Helpers\DocumentorHelper;
 use Bfg\Entity\Core\Entities\NamespaceEntity;
 use Bfg\Entity\Core\Entities\ParamEntity;
 use Bfg\Entity\Core\EntityPhp;
+use Bfg\Entity\Core\Saver;
 
 if (!function_exists('class_in_file')) {
     /**
@@ -16,7 +19,7 @@ if (!function_exists('class_in_file')) {
      */
     function class_in_file(string $file)
     {
-        return (new \Bfg\Entity\ClassGetter())->getClassFullNameFromFile($file);
+        return (new ClassGetter())->getClassFullNameFromFile($file);
     }
 }
 
@@ -105,11 +108,11 @@ if (!function_exists('class_property_entity')) {
     }
 }
 
-if (!function_exists('documentor_entity')) {
+if (!function_exists('doc_entity')) {
     /**
      * @return DocumentorEntity
      */
-    function documentor_entity()
+    function doc_entity(): DocumentorEntity
     {
         return (new DocumentorEntity());
     }
@@ -121,9 +124,9 @@ if (!function_exists('get_doc_var')) {
      * @param  string  $var_name
      * @return string
      */
-    function get_doc_var(string $doc, string $var_name)
+    function get_doc_var(string $doc, string $var_name): string
     {
-        return \Bfg\Entity\Core\Entities\Helpers\DocumentorHelper::get_variable($doc, $var_name);
+        return DocumentorHelper::get_variable($doc, $var_name);
     }
 }
 
@@ -132,7 +135,7 @@ if (!function_exists('array_entity')) {
      * @param $data
      * @return ArrayEntity
      */
-    function array_entity($data)
+    function array_entity($data): ArrayEntity
     {
         return (new ArrayEntity($data));
     }
@@ -141,65 +144,12 @@ if (!function_exists('array_entity')) {
 if (!function_exists('saver')) {
     /**
      * @param $data
-     * @return \Bfg\Entity\Core\Saver
+     * @return Saver
      * @throws Exception
      */
-    function saver($data)
+    function saver($data): Saver
     {
-        return new \Bfg\Entity\Core\Saver($data);
-    }
-}
-
-if (!function_exists('file_get_lines')) {
-    /**
-     * @param  string  $file
-     * @param  int  $from
-     * @param  int  $to
-     * @return null|string
-     */
-    function file_get_lines(string $file, int $from = 0, int $to = 0)
-    {
-        if (is_file($file)) {
-            $file_data = explode("\n", file_get_contents($file));
-
-            foreach ($file_data as $num => $file_line) {
-                $num_line = $num + 1;
-
-                if ($num_line < $from || $num_line > $to) {
-                    unset($file_data[$num]);
-                }
-            }
-
-            return implode("\n", $file_data);
-        }
-
-        return null;
-    }
-}
-
-if (!function_exists('eloquent_instruction')) {
-    /**
-     * [ ==|=|is  (VALUE)] = where('name', '=', 'value')
-     * [ <=       (VALUE)] = where('name', '<=', 'value')
-     * [ >=       (VALUE)] = where('name', '>=', 'value')
-     * [ <        (VALUE)] = where('name', '<', 'value')
-     * [ >        (VALUE)] = where('name', '>', 'value')
-     * [ !=|not   (VALUE)] = where('name', '!=', 'value')
-     * [ %%|like  (VALUE)] = where('name', 'like', '%value%')
-     * [ %|%like  (VALUE)] = where('name', 'like', '%value')
-     * [ !%|like% (VALUE)] = where('name', 'like', 'value%')
-     * [ in       (VALUE)] = whereIn('name', explode(';', 'value;value...'))
-     * [ not in   (VALUE)] = whereNotIn('name', explode(';', 'value;value...'))
-     * [ not null (VALUE)] = whereNotNull('name')
-     * [ null     (VALUE)] = whereNull('name')
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Relations\Relation  $eloquent
-     * @param  array  $instructions
-     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Relations\Relation
-     */
-    function eloquent_instruction($eloquent, array $instructions)
-    {
-        return \Bfg\Entity\Core\Accessor::create($eloquent)->eloquentInstruction($instructions);
+        return new Saver($data);
     }
 }
 
@@ -215,19 +165,6 @@ if (!function_exists("var_export_array")) {
     function var_export_array(array $data = [], bool $compress = false, int $max_chars = 0)
     {
         return array_entity($data)->setMinimized($compress)->setMaxChars($max_chars)->render();
-    }
-}
-
-if (!function_exists('multi_dot_call')) {
-    /**
-     * @param $obj
-     * @param  string  $dot_path
-     * @param  bool  $locale
-     * @return mixed|null
-     */
-    function multi_dot_call($obj, string $dot_path, bool $locale = true)
-    {
-        return \Bfg\Entity\Core\Accessor::create($obj)->dotCall($dot_path, $locale);
     }
 }
 

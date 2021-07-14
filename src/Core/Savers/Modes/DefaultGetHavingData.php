@@ -19,7 +19,7 @@ trait DefaultGetHavingData
 
             $this->replace_line_to = $this->ref->getEndLine();
 
-            return file_get_lines($this->file, $this->replace_line_from, $this->replace_line_to);
+            return file_lines_get_contents($this->file, $this->replace_line_from, $this->replace_line_to);
         }
     }
 }
