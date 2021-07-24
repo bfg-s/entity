@@ -29,7 +29,7 @@ trait DocumentorHelper {
             $doc = (string)$doc;
         }
 
-        if (preg_match('/\*\s([^\@][0-9A-Za-z\s\.\!\?\$\*\-\"]+\n)/m', $doc, $matches)) {
+        if (preg_match('/\*\s([^\@.]+\n)/m', $doc, $matches)) {
 
             unset($matches[0]);
 
@@ -88,5 +88,35 @@ trait DocumentorHelper {
         }
 
         return "";
+    }
+
+    /**
+     * @param  string  $doc
+     * @param  string  $var_name
+     * @return string
+     */
+    public static function get_variables(string $doc)
+    {
+        if ($doc instanceof Renderable) {
+
+            $doc = $doc->render();
+        }
+
+        else {
+
+            $doc = (string)$doc;
+        }
+
+        $doc = explode("\n", $doc);
+
+        $result = [];
+
+        foreach ($doc as $item) {
+            if (preg_match('/\*\s+@([a-zA-Z\-\_]+)\s+(.*)/', $item, $m)) {
+                $result[$m[1]] = $m[2];
+            }
+        }
+
+        return $result;
     }
 }
