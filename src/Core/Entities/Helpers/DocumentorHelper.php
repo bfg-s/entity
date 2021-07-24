@@ -33,7 +33,10 @@ trait DocumentorHelper {
 
             unset($matches[0]);
 
-            return trim(str_replace("\n", "", implode($glue, $matches)), "*. ");
+            return str_replace(
+                ["* ", "  "],"",
+                trim(str_replace("\n", "", implode($glue, $matches)), "*. ")
+            );
         }
 
         return "";
