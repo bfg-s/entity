@@ -12,6 +12,29 @@ use Bfg\Entity\Core\Entities\ParamEntity;
 use Bfg\Entity\Core\EntityPhp;
 use Bfg\Entity\Core\Saver;
 
+if (!function_exists('push_to_gitignore')) {
+    /**
+     * @param  string  $path
+     * @return bool
+     */
+    function push_to_gitignore(string $path)
+    {
+        $gitignore = file_get_contents(base_path('.gitignore'));
+
+        $add_to_ignore = "";
+
+        if (strpos($gitignore, $path) === false) {
+            $add_to_ignore .= "{$path}\n";
+        }
+
+        if ($add_to_ignore) {
+
+            return !!file_put_contents(base_path('.gitignore'), trim($gitignore) . "\n" . $add_to_ignore);
+        }
+        return false;
+    }
+}
+
 if (!function_exists('class_in_file')) {
     /**
      * @param  string  $file

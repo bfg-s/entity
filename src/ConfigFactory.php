@@ -9,215 +9,243 @@ namespace Bfg\Entity;
 class ConfigFactory
 {
     /**
-     * File path
-     *
      * @var string
      */
-    protected $file;
+    protected string $file;
 
     /**
-     * File data
-     *
      * @var array
      */
-    protected $file_data = [];
+    protected array $items = [];
 
     /**
-     * Get file data
-     *
-     * @return array
+     * ConfigFactory constructor.
+     * @param  string  $file
      */
-    public function data()
+    public function __construct(string $file)
     {
-        return $this->file_data;
-    }
+        $this->file = $file;
 
-    /**
-     * CfgFile constructor.
-     *
-     * @param null $file
-     */
-    public function __construct($file = null)
-    {
-        if($file) {
+        if (is_file($file)) {
 
-            $this->file($file);
+            $this->items = \Arr::dot(include $file);
+
+        } else {
+
+            $dir = dirname($this->file);
+
+            if (!is_dir($dir)) {
+
+                mkdir($dir, 0777, 1);
+            }
         }
     }
 
     /**
-     * Check, has data or not
-     *
-     * @param $name
+     * Get variable data by dot
+     * @param  string  $path
+     * @param  null  $default
+     * @return mixed
+     */
+    public function get(string|array $path, $default = null): mixed
+    {
+        $result = $this->has(...(array)$path) ? $this->items[implode('.', (array)$path)] : $default;
+
+        return $result && is_array($result) ? array_dots_uncollapse($result) : $result;
+    }
+
+    /**
+     * Check on has data
+     * @param  string  ...$path Path for implode
      * @return bool
      */
-    public function has($name)
+    public function has(...$path): bool
     {
-        $this->readFromFile();
-
-        return isset($this->file_data[$name]);
+        return isset($this->items[implode('.', $path)]);
     }
 
     /**
-     * Add file in to work
-     *
-     * @param $path
+     * Merge data in to factory
+     * @param  array  $array
      * @return $this
      */
-    public function file($path)
+    public function merge(array $array): static
     {
-        $this->file = $path;
-
-        $this->readFromFile();
+        $this->items = array_merge($this->items, \Arr::dot($array));
 
         return $this;
     }
 
     /**
-     * Write or rewrite data in to config list
-     *
-     * @param $name
-     * @param null $value
+     * Set data in to factory
+     * @param  string|array  $path
+     * @param  null  $value
      * @return $this
      */
-    public function write($name, $value = null)
+    public function set(string|array $path, $value = null): static
     {
-        $this->readFromFile();
+        $this->items[implode('.', (array)$path)] = $value;
 
-        if (is_string($name)) {
+        if (is_array($value)) {
 
-            $this->file_data[$name] = $value;
-
-        } else if (is_array($name)) {
-
-            $this->file_data = array_merge($this->file_data, $name);
+            $this->items = \Arr::dot($this->items);
         }
 
-        $this->writeInFile();
+        return $this;
+    }
+
+    /**
+     * Set data in to factory if not exists
+     * @param  string|array  $path
+     * @param  null  $value
+     * @return $this
+     */
+    public function setIfNotExists(string|array $path, $value = null): static
+    {
+        if (!$this->has($path)) {
+
+            $this->set($path, $value);
+        }
 
         return $this;
     }
 
     /**
-     * @param string $name
-     * @param null $value
+     * Set data in to factory if exists
+     * @param  string|array  $path
+     * @param  null  $value
      * @return $this
      */
-    public function writeIfUnique(string $name, $value = null)
+    public function setIfExists(string|array $path, $value = null): static
     {
-        if (isset($this->file_data[$name])) {
+        if ($this->has($path)) {
 
-            if (json_encode($this->file_data[$name]) !== json_encode($value)) {
+            $this->set($path, $value);
+        }
 
-                $this->write($name, $value);
+        return $this;
+    }
+
+    /**
+     * Forget factory variables
+     * @param string ...$paths
+     * @return $this
+     */
+    public function forget(...$paths): static
+    {
+        foreach ($paths as $path) {
+
+            if ($this->has($path)) {
+
+                unset($this->items[implode('.', (array)$path)]);
             }
         }
 
-        else {
-
-            $this->write($name, $value);
-        }
-
         return $this;
     }
 
     /**
-     * @param $group
-     * @param $key
-     * @param null $value
-     * @return ConfigFactory
+     * Set and save data to factory
+     * @param  array  $data
+     * @return bool
      */
-    public function add_to_group($group, $key, $value = null)
+    public function update(array $data): bool
     {
-        $this->readFromFile();
-
-        if (is_array($this->file_data)) {
-
-            $this->file_data[$group][$key] = $value;
-        }
-
-        $this->writeInFile();
-
-        return $this;
+        return $this->merge($data)->save();
     }
 
     /**
-     * @param array $array
-     * @return $this
+     * Delete config file
+     * @return bool
      */
-    public function recursiveMerge(array $array)
-    {
-        $this->readFromFile();
-
-        $this->file_data = array_merge_recursive($this->file_data, $array);
-
-        $this->writeInFile();
-
-        return $this;
-    }
-
-    /**
-     * Remove data from config list
-     *
-     * @param $name
-     * @return $this
-     */
-    public function remove($name)
-    {
-        $this->readFromFile();
-
-        if (!is_array($name)) {
-
-            $name = func_get_args();
-        }
-
-        $this->file_data = collect($this->file_data)->except($name)->toArray();
-
-        $this->writeInFile();
-
-        return $this;
-    }
-
-    /**
-     * Write all data in to file
-     *
-     * @return $this
-     */
-    protected function writeInFile()
-    {
-        file_put_contents($this->file, config_file_wrapper($this->file_data));
-
-        return $this;
-    }
-
-    /**
-     * Read or reread from file
-     *
-     * @return $this
-     */
-    protected function readFromFile()
+    public function delete(): bool
     {
         if (is_file($this->file)) {
 
-            $file_data = include $this->file;
-
-            if (is_array($file_data)) {
-
-                $this->file_data = $file_data;
-            }
+            return \File::delete($this->file);
         }
 
-        return $this;
+        return false;
     }
 
     /**
-     * Open CFG file
-     *
-     * @param $file
-     * @return ConfigFactory
+     * Save a factory data
+     * @return false
      */
-    static function open ($file) {
+    public function save(): bool
+    {
+        return !!file_put_contents(
+            $this->file,
+            $this
+        );
+    }
 
-        return (new static())->file($file);
+    /**
+     * Magic method get
+     * @param  string  $name
+     * @return mixed
+     */
+    public function __get(string $name)
+    {
+        return $this->get($name);
+    }
+
+    /**
+     * Magic method set
+     * @param  string  $name
+     * @param $value
+     */
+    public function __set(string $name, $value): void
+    {
+        $this->set($name, $value);
+    }
+
+    /**
+     * Convert to string
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return array_entity(
+            array_dots_uncollapse($this->items)
+        )->wrap('php', 'return')->render();
+    }
+
+    /**
+     * Update if call factory like function
+     * @param  array  $data
+     * @return bool
+     */
+    public function __invoke(array $data): bool
+    {
+        return $this->update($data);
+    }
+
+    /**
+     * Delete the variable in factory
+     * @param  string  $name
+     */
+    public function __unset(string $name): void
+    {
+        $this->forget($name);
+    }
+
+    /**
+     * Check on has data
+     * @param  string  $name
+     * @return bool
+     */
+    public function __isset(string $name): bool
+    {
+        return $this->has($name);
+    }
+
+    /**
+     * @param  string  $file
+     * @return static
+     */
+    public static function create(string $file): static
+    {
+        return app(static::class, compact('file'));
     }
 }

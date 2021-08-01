@@ -18,7 +18,7 @@ class ClassGetter
     {
         $result = $this->getClassNamespaceFromFile($filePathName) . '\\' . $this->getClassNameFromFile($filePathName);
 
-        return $result !== '\\' ? (class_exists($result) ? $result : null) : null;
+        return $result !== '\\' ? $result : null;
     }
 
     /**
