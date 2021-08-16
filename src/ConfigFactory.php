@@ -168,6 +168,17 @@ class ConfigFactory
     }
 
     /**
+     * Clear storage
+     * @return $this
+     */
+    public function clear(): static
+    {
+        $this->items = [];
+
+        return $this;
+    }
+
+    /**
      * Save a factory data
      * @return false
      */
