@@ -28,7 +28,7 @@ class ConfigFactory
 
         if (is_file($file)) {
 
-            $this->items = \Arr::dot(include $file);
+            $this->items = include $file;
 
         } else {
 
@@ -43,25 +43,32 @@ class ConfigFactory
 
     /**
      * Get variable data by dot
-     * @param  string  $path
+     * @param  string|array  $path
      * @param  null  $default
      * @return mixed
      */
     public function get(string|array $path, $default = null): mixed
     {
-        $result = $this->has(...(array)$path) ? $this->items[implode('.', (array)$path)] : $default;
+        return \Arr::get($this->items, implode('.', (array)$path), $default);
+    }
 
-        return $result && is_array($result) ? array_dots_uncollapse($result) : $result;
+    /**
+     * Get all data
+     * @return array
+     */
+    public function all(): array
+    {
+        return $this->items;
     }
 
     /**
      * Check on has data
-     * @param  string  ...$path Path for implode
+     * @param  string|array $path Path for implode
      * @return bool
      */
-    public function has(...$path): bool
+    public function has($path): bool
     {
-        return isset($this->items[implode('.', $path)]);
+        return \Arr::has($this->items, implode('.', (array)$path));
     }
 
     /**
@@ -84,12 +91,7 @@ class ConfigFactory
      */
     public function set(string|array $path, $value = null): static
     {
-        $this->items[implode('.', (array)$path)] = $value;
-
-        if (is_array($value)) {
-
-            $this->items = \Arr::dot($this->items);
-        }
+        \Arr::set($this->items, implode('.', (array)$path), $value);
 
         return $this;
     }
@@ -128,17 +130,14 @@ class ConfigFactory
 
     /**
      * Forget factory variables
-     * @param string ...$paths
+     * @param string|array $path
      * @return $this
      */
-    public function forget(...$paths): static
+    public function forget($path): static
     {
-        foreach ($paths as $path) {
+        if ($this->has($path)) {
 
-            if ($this->has($path)) {
-
-                unset($this->items[implode('.', (array)$path)]);
-            }
+            \Arr::forget($this->items, implode('.', (array)$path));
         }
 
         return $this;

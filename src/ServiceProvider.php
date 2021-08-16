@@ -11,12 +11,6 @@ use Bfg\Installer\Providers\InstalledProvider;
 class ServiceProvider extends InstalledProvider
 {
     /**
-     * The description of extension.
-     * @var string|null
-     */
-    public ?string $description = "Generator PHP code";
-
-    /**
      * Set as installed by default.
      * @var bool
      */
