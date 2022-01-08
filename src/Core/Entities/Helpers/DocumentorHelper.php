@@ -5,13 +5,13 @@ namespace Bfg\Entity\Core\Entities\Helpers;
 use Illuminate\Contracts\Support\Renderable;
 
 /**
- * Trait DocumentorHelper
+ * Trait DocumentorHelper.
  * @package Bfg\Entity\Core\Entities\Helpers
  */
-trait DocumentorHelper {
-
+trait DocumentorHelper
+{
     /**
-     * Pars description
+     * Pars description.
      *
      * @param string|Renderable $doc
      * @param string $glue
@@ -20,30 +20,25 @@ trait DocumentorHelper {
     public static function parseDescription($doc, string $glue = "\n")
     {
         if ($doc instanceof Renderable) {
-
             $doc = $doc->render();
-        }
-
-        else {
-
-            $doc = (string)$doc;
+        } else {
+            $doc = (string) $doc;
         }
 
         if (preg_match('/\*\s([^\@.]+\n)/m', $doc, $matches)) {
-
             unset($matches[0]);
 
             return str_replace(
-                ["* ", "  "],"",
-                trim(str_replace("\n", "", implode($glue, $matches)), "*. ")
+                ['* ', '  '], '',
+                trim(str_replace("\n", '', implode($glue, $matches)), '*. ')
             );
         }
 
-        return "";
+        return '';
     }
 
     /**
-     * Parse return tag
+     * Parse return tag.
      *
      * @param string|Renderable $doc
      * @return string
@@ -51,21 +46,16 @@ trait DocumentorHelper {
     public static function parseReturn($doc)
     {
         if ($doc instanceof Renderable) {
-
             $doc = $doc->render();
-        }
-
-        else {
-
-            $doc = (string)$doc;
+        } else {
+            $doc = (string) $doc;
         }
 
         if (preg_match('/@return\\s([\\_a-zA-Z\\\\\|\s\[\]]+)/m', $doc, $matches)) {
-
             return isset($matches[1]) ? trim($matches[1]) : '';
         }
 
-        return "";
+        return '';
     }
 
     /**
@@ -76,21 +66,16 @@ trait DocumentorHelper {
     public static function get_variable(string $doc, string $var_name)
     {
         if ($doc instanceof Renderable) {
-
             $doc = $doc->render();
-        }
-
-        else {
-
-            $doc = (string)$doc;
+        } else {
+            $doc = (string) $doc;
         }
 
         if (preg_match('/@'.$var_name.'\s(.*)/m', $doc, $matches)) {
-
             return isset($matches[1]) ? trim($matches[1]) : '';
         }
 
-        return "";
+        return '';
     }
 
     /**
@@ -101,13 +86,9 @@ trait DocumentorHelper {
     public static function get_variables(string $doc)
     {
         if ($doc instanceof Renderable) {
-
             $doc = $doc->render();
-        }
-
-        else {
-
-            $doc = (string)$doc;
+        } else {
+            $doc = (string) $doc;
         }
 
         $doc = explode("\n", $doc);

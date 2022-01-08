@@ -5,7 +5,7 @@ namespace Bfg\Entity\Core\Savers\Modes;
 use Illuminate\Contracts\Support\Renderable;
 
 /**
- * Class Mode
+ * Class Mode.
  *
  * @package Bfg\Entity\Core\Savers\Modes
  */
@@ -17,7 +17,7 @@ abstract class Mode implements Renderable
     protected $data;
 
     /**
-     * Reflection object
+     * Reflection object.
      *
      * @var object
      */
@@ -113,23 +113,22 @@ abstract class Mode implements Renderable
         $origin_data = $this->getHavingData();
 
         if (empty(trim($origin_data))) {
-
-            $this->data = "\n" . $this->data . "\n";
+            $this->data = "\n".$this->data."\n";
         }
 
-        if (!empty($origin_data)) {
-
+        if (! empty($origin_data)) {
             $fline = explode("\n", $origin_data)[0];
 
-            $tab = str_repeat(" ", 4);
+            $tab = str_repeat(' ', 4);
 
-            if (!empty($fline) && preg_match('/([\s\t]+).*/', $fline, $m)) { $tab = $m[1]; }
+            if (! empty($fline) && preg_match('/([\s\t]+).*/', $fline, $m)) {
+                $tab = $m[1];
+            }
 
             $lines = [];
 
             foreach (explode("\n", trim($this->data)) as $item) {
-
-                $lines[] = $tab . $item;
+                $lines[] = $tab.$item;
             }
 
             $this->data = implode("\n", $lines);
@@ -145,43 +144,28 @@ abstract class Mode implements Renderable
      */
     private function havingData(string $data_in)
     {
-        if (!empty($data_in) && isset($this->position['mode']) && $this->position['mode'] !== 'new') {
-
+        if (! empty($data_in) && isset($this->position['mode']) && $this->position['mode'] !== 'new') {
             if ($this->position['mode'] === 'append') {
-
-                $this->data = $data_in . "\n" . $this->data;
-            }
-
-            else if ($this->position['mode'] === 'prepend') {
-
-                $this->data = $this->data . "\n" . $data_in;
-            }
-
-            else if ($this->position['mode'] === 'after') {
-
+                $this->data = $data_in."\n".$this->data;
+            } elseif ($this->position['mode'] === 'prepend') {
+                $this->data = $this->data."\n".$data_in;
+            } elseif ($this->position['mode'] === 'after') {
                 $lines = [];
 
                 foreach (explode("\n", $data_in) as $item) {
-
                     $lines[] = $item;
 
                     if (trim($item) === trim($this->position['line'])) {
-
                         $lines[] = $this->data;
                     }
                 }
 
                 $this->data = implode("\n", $lines);
-            }
-
-            else if ($this->position['mode'] === 'before') {
-
+            } elseif ($this->position['mode'] === 'before') {
                 $lines = [];
 
                 foreach (explode("\n", $data_in) as $item) {
-
                     if (trim($item) === trim($this->position['line'])) {
-
                         $lines[] = $this->data;
                     }
 
@@ -197,20 +181,20 @@ abstract class Mode implements Renderable
      * @param string $data
      * @return string
      */
-    abstract public function build (string $data) : string;
+    abstract public function build(string $data) : string;
 
     /**
      * @return string
      */
-    abstract public function getHavingData () : string;
+    abstract public function getHavingData() : string;
 
     /**
-     * Insert data
+     * Insert data.
      *
      * @param string $data
      * @param string $origin
      * @param string $file_data
      * @return string
      */
-    abstract protected function insert (string $data, string $origin, string $file_data) : string;
+    abstract protected function insert(string $data, string $origin, string $file_data) : string;
 }

@@ -5,18 +5,18 @@ namespace Bfg\Entity\Core\Traits;
 use Bfg\Entity\Core\Entities\DocumentorEntity;
 
 /**
- * Trait HaveDocumentatorEntity
+ * Trait HaveDocumentatorEntity.
  * @package Bfg\Entity\Core\Traits
  */
-trait HaveDocumentatorEntity {
-
+trait HaveDocumentatorEntity
+{
     /**
      * @var null|DocumentorEntity
      */
     protected $doc = null;
 
     /**
-     * Documentor class access
+     * Documentor class access.
      *
      * @param \Closure|DocumentorEntity $call
      * @return $this
@@ -24,14 +24,9 @@ trait HaveDocumentatorEntity {
     public function doc($call)
     {
         if ($call instanceof DocumentorEntity) {
-
             $this->doc = $call;
-        }
-
-        else if ($call instanceof \Closure) {
-
-            if (!$this->doc) {
-
+        } elseif ($call instanceof \Closure) {
+            if (! $this->doc) {
                 $this->doc = new DocumentorEntity();
             }
 

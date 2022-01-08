@@ -3,14 +3,13 @@
 namespace Bfg\Entity\Core\Savers;
 
 /**
- * Class File
+ * Class File.
  * @package Bfg\Entity\Core\Savers
  */
-class File extends Driver {
-
-
+class File extends Driver
+{
     /**
-     * Save method
+     * Save method.
      * @return int
      */
     public function save(): int

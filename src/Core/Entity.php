@@ -2,28 +2,28 @@
 
 namespace Bfg\Entity\Core;
 
-use Illuminate\Contracts\Support\Renderable;
+use Bfg\Entity\Core\Traits\EntityDecorator;
 use Bfg\Entity\Core\Wrappers\CommentWrapper;
 use Bfg\Entity\Core\Wrappers\PHPWrapper;
 use Bfg\Entity\Core\Wrappers\ReturnWrapper;
 use Bfg\Entity\Core\Wrappers\Wrapper;
-use Bfg\Entity\Core\Traits\EntityDecorator;
+use Illuminate\Contracts\Support\Renderable;
 
 /**
- * Class Entity
+ * Class Entity.
  * @package Bfg\Entity\Core
  */
-abstract class Entity implements Renderable {
-
+abstract class Entity implements Renderable
+{
     use EntityDecorator;
 
     /**
      * @var array
      */
-    static protected $wrappers = [
+    protected static $wrappers = [
         'php' => PHPWrapper::class,
         'return' => ReturnWrapper::class,
-        'comment' => CommentWrapper::class
+        'comment' => CommentWrapper::class,
     ];
 
     /**
@@ -32,11 +32,11 @@ abstract class Entity implements Renderable {
     protected $apply_wrappers = [];
 
     /**
-     * Build entity
+     * Build entity.
      *
      * @return string
      */
-    abstract protected function build () : string;
+    abstract protected function build() : string;
 
     /**
      * @return string
@@ -53,46 +53,28 @@ abstract class Entity implements Renderable {
     public function wrap(...$names)
     {
         foreach ($names as $name) {
-
             $parts = [];
 
             if (is_string($name)) {
-
-                $parts = explode(":", $name);
-            }
-
-            else if (is_array($name)) {
-
+                $parts = explode(':', $name);
+            } elseif (is_array($name)) {
                 $this->wrap(...array_values($name));
-            }
-
-            else {
-
+            } else {
                 $parts[] = $name;
             }
 
             foreach ($parts as $part) {
-
                 if (is_string($part)) {
-
-                    if (isset(Entity::$wrappers[$part])) {
-
-                        $this->apply_wrappers[] = Entity::$wrappers[$part];
-                    }
-
-                    else if (class_exists($part)) {
-
+                    if (isset(self::$wrappers[$part])) {
+                        $this->apply_wrappers[] = self::$wrappers[$part];
+                    } elseif (class_exists($part)) {
                         $o = new $name;
 
                         if ($o instanceof Wrapper) {
-
                             $this->apply_wrappers[] = $o;
                         }
                     }
-                }
-
-                else if ($name instanceof Wrapper) {
-
+                } elseif ($name instanceof Wrapper) {
                     $this->apply_wrappers[] = $name;
                 }
             }
@@ -113,21 +95,16 @@ abstract class Entity implements Renderable {
         $i = 0;
 
         foreach (array_reverse(array_values($this->apply_wrappers)) as $apply_wrapper) {
-
             if ($apply_wrapper instanceof Wrapper) {
-
                 $data = $apply_wrapper->createData($data);
-            }
-
-            else {
-
+            } else {
                 $data = $apply_wrapper::create()->createData($data);
             }
 
             $i++;
         }
 
-        return (string)$data;
+        return (string) $data;
     }
 
     /**

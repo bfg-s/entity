@@ -6,7 +6,7 @@ use Bfg\Entity\Core\Entity;
 use Bfg\Entity\Core\Traits\HaveDocumentatorEntity;
 
 /**
- * Class ClassEntity
+ * Class ClassEntity.
  * @package Bfg\Entity\Core\Entities
  */
 class ClassEntity extends Entity
@@ -14,77 +14,77 @@ class ClassEntity extends Entity
     use HaveDocumentatorEntity;
 
     /**
-     * Object namespace
+     * Object namespace.
      *
      * @var null|string
      */
     protected $namespace = null;
 
     /**
-     * Use objects
+     * Use objects.
      *
      * @var array
      */
     protected $uses = [];
 
     /**
-     * Class name
+     * Class name.
      *
      * @var string
      */
     protected $name;
 
     /**
-     * Object modifiers
+     * Object modifiers.
      *
      * @var string
      */
-    protected $modifiers = "class";
+    protected $modifiers = 'class';
 
     /**
-     * Object traits
+     * Object traits.
      *
      * @var array
      */
     protected $traits = [];
 
     /**
-     * Object properties
+     * Object properties.
      *
      * @var array
      */
     protected $props = [];
 
     /**
-     * Object constants
+     * Object constants.
      *
      * @var array
      */
     protected $const = [];
 
     /**
-     * Extend object
+     * Extend object.
      *
      * @var null|string
      */
     protected $extends = null;
 
     /**
-     * Implement list
+     * Implement list.
      *
      * @var array
      */
     protected $implements = [];
 
     /**
-     * Methods list
+     * Methods list.
      *
      * @var array
      */
     protected $methods = [];
 
     /**
-     * Auto find object and set use
+     * Auto find object and set use.
      *
      * @var bool
      */
@@ -101,7 +101,7 @@ class ClassEntity extends Entity
     }
 
     /**
-     * Add method in to collection
+     * Add method in to collection.
      *
      * @param string|ClassMethodEntity $name
      * @param \Closure|array|string|null $call
@@ -110,27 +110,19 @@ class ClassEntity extends Entity
     public function method($name, $call = null)
     {
         if ($name instanceof ClassMethodEntity) {
-
-            if (!empty($n = $name->getName())) {
-
+            if (! empty($n = $name->getName())) {
                 $name->setParent($this);
 
                 $this->methods[$n] = $name;
             }
-        }
-
-        else if (is_string($name)) {
-
+        } elseif (is_string($name)) {
             $this->methods[$name] = new ClassMethodEntity($name, $this);
 
             if ($call instanceof \Closure) {
-
                 call_user_func($call, $this->methods[$name]);
 
                 return $this;
-
             } else {
-
                 return $this->methods[$name];
             }
         }
@@ -151,7 +143,7 @@ class ClassEntity extends Entity
     }
 
     /**
-     * Add prop inn to object
+     * Add prop inn to object.
      *
      * @param string|ClassPropertyEntity $name
      * @param mixed $value
@@ -160,25 +152,17 @@ class ClassEntity extends Entity
     public function prop($name, $value = ClassPropertyEntity::NONE_PARAM)
     {
         if ($name instanceof ClassPropertyEntity) {
-
-            if (!empty($n = $name->getName())) {
-
+            if (! empty($n = $name->getName())) {
                 $this->props[$n] = $name;
             }
 
             return $name;
-        }
-
-        else if (is_string($name)) {
-
+        } elseif (is_string($name)) {
             $prop = new ClassPropertyEntity($name);
 
             if ($value instanceof \Closure) {
-
                 call_user_func($value, $prop);
-
             } else {
-
                 $prop->value($value);
             }
 
@@ -191,28 +175,27 @@ class ClassEntity extends Entity
     }
 
     /**
-     * Set object namespace
+     * Set object namespace.
      *
      * @param $namespace
      * @return $this
      */
     public function namespace($namespace)
     {
-        $this->namespace = "namespace " . $namespace . ";" . $this->eol();
+        $this->namespace = 'namespace '.$namespace.';'.$this->eol();
 
         return $this;
     }
 
     /**
-     * Set extends object
+     * Set extends object.
      *
      * @param string $object
      * @return ClassEntity
      */
-    public function extend($object = "")
+    public function extend($object = '')
     {
         if ($this->auto_use && preg_match('/^([A-Za-z][A-Za-z\\\\]+)\\\\([A-Za-z]+)$/', $object, $matches)) {
-
             $this->use($object);
 
             $object = $matches[2];
@@ -224,7 +207,7 @@ class ClassEntity extends Entity
     }
 
     /**
-     * Add use in to object
+     * Add use in to object.
      *
      * @param $object
      * @return $this
@@ -233,13 +216,13 @@ class ClassEntity extends Entity
     {
         $object = trim($object, " \t\n\r\0\x0B\\");
 
-        $this->uses[$object] = "use " . $object . ";";
+        $this->uses[$object] = 'use '.$object.';';
 
         return $this;
     }
 
     /**
-     * Add Implement in to object
+     * Add Implement in to object.
      *
      * @param $implement
      * @return $this
@@ -247,7 +230,6 @@ class ClassEntity extends Entity
     public function implement($implement)
     {
         if ($this->auto_use && preg_match('/^([A-Za-z][A-Za-z\\\\]+)\\\\([A-Za-z]+)$/', $implement, $matches)) {
-
             $this->use($implement);
 
             $implement = $matches[2];
@@ -259,7 +241,7 @@ class ClassEntity extends Entity
     }
 
     /**
-     * Add trait in to object
+     * Add trait in to object.
      *
      * @param $trait
      * @return $this
@@ -267,7 +249,6 @@ class ClassEntity extends Entity
     public function addTrait($trait)
     {
         if ($this->auto_use && preg_match('/^([A-Za-z][A-Za-z\\\\]+)\\\\([A-Za-z]+)$/', $trait, $matches)) {
-
             $this->use($trait);
 
             $trait = $matches[2];
@@ -279,55 +260,55 @@ class ClassEntity extends Entity
     }
 
     /**
-     * Set Final Class
+     * Set Final Class.
      *
      * @return $this
      */
     public function finalClass()
     {
-        $this->modifiers = "final class";
+        $this->modifiers = 'final class';
 
         return $this;
     }
 
     /**
-     * Set Abstract Class
+     * Set Abstract Class.
      *
      * @return $this
      */
     public function abstractClass()
     {
-        $this->modifiers = "abstract class";
+        $this->modifiers = 'abstract class';
 
         return $this;
     }
 
     /**
-     * Set Trait Object
+     * Set Trait Object.
      *
      * @return $this
      */
     public function traitObject()
     {
-        $this->modifiers = "trait";
+        $this->modifiers = 'trait';
 
         return $this;
     }
 
     /**
-     * Set Interface Object
+     * Set Interface Object.
      *
      * @return $this
      */
     public function interfaceObject()
     {
-        $this->modifiers = "interface";
+        $this->modifiers = 'interface';
 
         return $this;
     }
 
     /**
-     * Off auto use objects
+     * Off auto use objects.
      *
      * @return $this
      */
@@ -339,7 +320,7 @@ class ClassEntity extends Entity
     }
 
     /**
-     * Method name getter
+     * Method name getter.
      *
      * @return string|null
      */
@@ -349,30 +330,27 @@ class ClassEntity extends Entity
     }
 
     /**
-     * Auto doc
+     * Auto doc.
      */
     private function autoDoc()
     {
         $this->doc(function (DocumentorEntity $doc) {
+            $doc->name($this->name.' '.ucwords($this->modifiers));
 
-            $doc->name($this->name . " " . ucwords($this->modifiers));
-
-            if (!empty($this->namespace)) {
-
-                $doc->tagPackage(str_replace(["namespace ", "\n", ";"], "", $this->namespace));
+            if (! empty($this->namespace)) {
+                $doc->tagPackage(str_replace(['namespace ', "\n", ';'], '', $this->namespace));
             }
         });
     }
 
     /**
-     * Build entity
+     * Build entity.
      *
      * @return string
      */
     protected function build(): string
     {
-        if (!$this->doc) {
-
+        if (! $this->doc) {
             $this->autoDoc();
         }
 
@@ -380,17 +358,17 @@ class ClassEntity extends Entity
 
             /** @var ClassMethodEntity $method */
             $method->setLevel($this->level + 4);
-            $method = $method->render() . $this->eol() . $this->eol();
+            $method = $method->render().$this->eol().$this->eol();
 
             if ($this->auto_use && preg_match_all('/([A-Za-z\\\\]+)\\\\([A-Za-z]+)/', $method, $matches, PREG_SET_ORDER)) {
-
                 foreach ($matches as $match) {
-
                     $method = str_replace($match[0], $match[2], $method);
-                    if ($this->name != $match[2]) $this->use($match[0]);
+                    if ($this->name != $match[2]) {
+                        $this->use($match[0]);
+                    }
                 }
 
-                $method = str_replace("\\" . $this->name, $this->name, $method);
+                $method = str_replace('\\'.$this->name, $this->name, $method);
             }
 
             $this->methods[$key] = $method;
@@ -403,14 +381,14 @@ class ClassEntity extends Entity
             $prop = $prop->render();
 
             if ($this->auto_use && preg_match_all('/([A-Za-z\\\\]+)\\\\([A-Za-z]+)/', $prop, $matches2, PREG_SET_ORDER)) {
-
                 foreach ($matches2 as $match) {
-
                     $prop = str_replace($match[0], $match[2], $prop);
-                    if ($this->name != $match[2]) $this->use($match[0]);
+                    if ($this->name != $match[2]) {
+                        $this->use($match[0]);
+                    }
                 }
 
-                $prop = str_replace("\\" . $this->name, $this->name, $prop);
+                $prop = str_replace('\\'.$this->name, $this->name, $prop);
             }
 
             $this->props[$key] = $prop;
@@ -418,66 +396,57 @@ class ClassEntity extends Entity
 
         $spaces = $this->space();
 
-        $data = "";
+        $data = '';
 
-        if ($this->namespace){
-
-            $data .= $spaces . $this->namespace . $this->eol();
+        if ($this->namespace) {
+            $data .= $spaces.$this->namespace.$this->eol();
         }
 
         foreach ($this->uses as $use) {
-
-            $data .= $spaces . $use . $this->eol();
+            $data .= $spaces.$use.$this->eol();
         }
 
         if (count($this->uses)) {
-
             $data .= $this->eol();
         }
 
-        if ($this->doc){
-
+        if ($this->doc) {
             $this->doc->setLevel($this->level);
 
             if ($d = $this->doc->render()) {
-
-                $data .= $d . $this->eol();
+                $data .= $d.$this->eol();
             }
         }
 
-        $data .= $spaces . $this->modifiers . " " . $this->name .
-            ($this->extends ? " extends " . $this->extends : "") .
-            ($this->implements ? " implements " . implode(", ", $this->implements) : "") . $this->eol();
+        $data .= $spaces.$this->modifiers.' '.$this->name.
+            ($this->extends ? ' extends '.$this->extends : '').
+            ($this->implements ? ' implements '.implode(', ', $this->implements) : '').$this->eol();
 
-        $data .= $spaces . "{" . $this->eol();
+        $data .= $spaces.'{'.$this->eol();
 
         if (count($this->traits)) {
-
-            $data .= $spaces . str_repeat(" ", 4) . "use " . implode(", ", $this->traits) . ";" . $this->eol() . $this->eol();
+            $data .= $spaces.str_repeat(' ', 4).'use '.implode(', ', $this->traits).';'.$this->eol().$this->eol();
         }
 
         foreach ($this->const as $n_const => $const) {
-
             if (is_array($const)) {
-
-                $const = array_entity($const)->setLevel($this->level+4)->render();
+                $const = array_entity($const)->setLevel($this->level + 4)->render();
             }
 
-            $data .= $spaces . str_repeat(" ", 4) . "const {$n_const}" . ($const !== ClassPropertyEntity::NONE_PARAM ? " = {$const};":";") . $this->eol() . $this->eol();
+            $data .= $spaces.str_repeat(' ', 4)."const {$n_const}".($const !== ClassPropertyEntity::NONE_PARAM ? " = {$const};" : ';').$this->eol().$this->eol();
         }
 
         foreach ($this->props as $prop) {
 
             /** @var ClassPropertyEntity $prop */
-            $data .= $prop . $this->eol() . $this->eol();
+            $data .= $prop.$this->eol().$this->eol();
         }
 
         foreach ($this->methods as $method) {
-
             $data .= $method;
         }
 
-        $data .= $spaces . "}" . $this->eol();
+        $data .= $spaces.'}'.$this->eol();
 
         return $data;
     }

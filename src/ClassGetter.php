@@ -3,26 +3,26 @@
 namespace Bfg\Entity;
 
 /**
- * Class ClassGetter
+ * Class ClassGetter.
  * @package Bfg\Entity
  */
 class ClassGetter
 {
     /**
-     * get the class namespace\name form file path using token
+     * get the class namespace\name form file path using token.
      *
      * @param $filePathName
      * @return string
      */
     public function getClassFullNameFromFile($filePathName)
     {
-        $result = $this->getClassNamespaceFromFile($filePathName) . '\\' . $this->getClassNameFromFile($filePathName);
+        $result = $this->getClassNamespaceFromFile($filePathName).'\\'.$this->getClassNameFromFile($filePathName);
 
         return $result !== '\\' ? $result : null;
     }
 
     /**
-     * build and return an object of a class from its file path
+     * build and return an object of a class from its file path.
      *
      * @param $filePathName
      * @return  mixed
@@ -37,7 +37,7 @@ class ClassGetter
     }
 
     /**
-     * get the class namespace form file path using token
+     * get the class namespace form file path using token.
      *
      * @param $filePathName
      * @return  null|string
@@ -67,7 +67,7 @@ class ClassGetter
             }
             $i++;
         }
-        if (!$namespace_ok) {
+        if (! $namespace_ok) {
             return null;
         } else {
             return $namespace;
@@ -75,7 +75,7 @@ class ClassGetter
     }
 
     /**
-     * get the class name form file path using token
+     * get the class name form file path using token.
      *
      * @param $filePathName
      * @return  mixed
@@ -84,7 +84,7 @@ class ClassGetter
     {
         $php_code = file_get_contents($filePathName);
 
-        $classes = array();
+        $classes = [];
         $tokens = token_get_all($php_code);
         $count = count($tokens);
         for ($i = 2; $i < $count; $i++) {
@@ -92,12 +92,11 @@ class ClassGetter
                 && $tokens[$i - 1][0] == T_WHITESPACE
                 && $tokens[$i][0] == T_STRING
             ) {
-
                 $class_name = $tokens[$i][1];
                 $classes[] = $class_name;
             }
         }
 
-        return $classes[0] ?? "";
+        return $classes[0] ?? '';
     }
 }

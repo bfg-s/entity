@@ -3,11 +3,11 @@
 namespace Bfg\Entity\Core\Wrappers;
 
 /**
- * Class PHPWrapper
+ * Class PHPWrapper.
  * @package Bfg\Entity\Core\Wrappers
  */
-class PHPWrapper extends Wrapper {
-
+class PHPWrapper extends Wrapper
+{
     /**
      * @param string $data
      * @return string

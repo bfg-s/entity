@@ -6,7 +6,7 @@ use Bfg\Entity\Core\Entity;
 use Bfg\Entity\Core\Traits\HaveDocumentatorEntity;
 
 /**
- * Class ClassMethodEntity
+ * Class ClassMethodEntity.
  * @package Bfg\Entity\Core\Entities
  */
 class ClassMethodEntity extends Entity
@@ -14,63 +14,63 @@ class ClassMethodEntity extends Entity
     use HaveDocumentatorEntity;
 
     /**
-     * Method name
+     * Method name.
      *
      * @var null|string
      */
     protected $name = null;
 
     /**
-     * Method parameters
+     * Method parameters.
      *
      * @var array
      */
     protected $parameters = [];
 
     /**
-     * Method return type
+     * Method return type.
      *
      * @var null|string
      */
     protected $returnType = null;
 
     /**
-     * Doc Method return type
+     * Doc Method return type.
      *
      * @var null|string
      */
     protected $docReturnType = null;
 
     /**
-     * Method modifiers
+     * Method modifiers.
      *
      * @var string
      */
-    protected $modifiers = "public";
+    protected $modifiers = 'public';
 
     /**
-     * Method data
+     * Method data.
      *
      * @var string
      */
     protected $data = null;
 
     /**
-     * Lines on method
+     * Lines on method.
      *
      * @var array
      */
     protected $lines = [];
 
     /**
-     * Parent if exists
+     * Parent if exists.
      *
      * @var ClassEntity
      */
     protected $parent = null;
 
     /**
-     * Create exception
+     * Create exception.
      *
      * @var bool
      */
@@ -87,13 +87,12 @@ class ClassMethodEntity extends Entity
         $this->name = $name;
 
         if ($parent) {
-
             $this->parent = $parent;
         }
     }
 
     /**
-     * Parent accessor
+     * Parent accessor.
      *
      * @return ClassEntity|null
      */
@@ -103,7 +102,7 @@ class ClassMethodEntity extends Entity
     }
 
     /**
-     * Parent accessor
+     * Parent accessor.
      *
      * @param ClassEntity $parent
      * @return ClassMethodEntity
@@ -116,7 +115,7 @@ class ClassMethodEntity extends Entity
     }
 
     /**
-     * Add param in to method
+     * Add param in to method.
      *
      * @param $name
      * @param null $default
@@ -125,26 +124,25 @@ class ClassMethodEntity extends Entity
      */
     public function param($name, $default = null, $type = null)
     {
-        if ($type === true && !is_null($default)) $type = gettype($default);
+        if ($type === true && ! is_null($default)) {
+            $type = gettype($default);
+        }
 
-        $type = (string)$type;
+        $type = (string) $type;
 
         if ($type && (class_exists($type) || preg_match('/^[^\\\\]([A-Za-z\\\\]+)\\\\([A-Za-z]+)$/', $type))) {
-
-            $type = "\\" . $type;
+            $type = '\\'.$type;
         }
 
         if (is_string($default)) {
-
-            $default = "\"" . $default . "\"";
+            $default = '"'.$default.'"';
         }
 
         if (is_array($default)) {
-
             $default = array_entity($default)->minimized()->render();
         }
 
-        $data = ($type ? $type . " " : "") . "\$" . $name . ($default ? " = " . $default : "");
+        $data = ($type ? $type.' ' : '').'$'.$name.($default ? ' = '.$default : '');
 
         $this->parameters[] = $data;
 
@@ -152,7 +150,7 @@ class ClassMethodEntity extends Entity
     }
 
     /**
-     * Create custom param
+     * Create custom param.
      *
      * @param string $data
      * @return $this
@@ -165,7 +163,7 @@ class ClassMethodEntity extends Entity
     }
 
     /**
-     * Create custom param if $eq
+     * Create custom param if $eq.
      *
      * @param $eq
      * @param string $data
@@ -177,7 +175,7 @@ class ClassMethodEntity extends Entity
     }
 
     /**
-     * Update modifier
+     * Update modifier.
      *
      * @param $modifier
      * @return $this
@@ -190,21 +188,24 @@ class ClassMethodEntity extends Entity
     }
 
     /**
-     * Extend method inner data
+     * Extend method inner data.
      *
      * @param $data
      * @return $this
      */
     public function data($data)
     {
-        if ($this->data) $this->data .= $data . $this->eol();
-        else $this->data = $data;
+        if ($this->data) {
+            $this->data .= $data.$this->eol();
+        } else {
+            $this->data = $data;
+        }
 
         return $this;
     }
 
     /**
-     * Set tag "return" in to auto doc
+     * Set tag "return" in to auto doc.
      *
      * @param $data
      * @return $this
@@ -217,25 +218,27 @@ class ClassMethodEntity extends Entity
     }
 
     /**
-     * Quick set doc description
+     * Quick set doc description.
      * @param $data
      * @return $this
      */
     public function docDescription($data)
     {
-        $this->doc(function (DocumentorEntity $doc) use ($data) { $doc->description($data); });
+        $this->doc(function (DocumentorEntity $doc) use ($data) {
+            $doc->description($data);
+        });
 
         return $this;
     }
 
     /**
-     * Set end line hov return self
+     * Set end line hov return self.
      *
      * @return $this
      */
     public function returnThis()
     {
-        $this->docReturnType = "\$this";
+        $this->docReturnType = '$this';
 
         $this->dataReturn($this->docReturnType);
 
@@ -243,7 +246,7 @@ class ClassMethodEntity extends Entity
     }
 
     /**
-     * Insert return data
+     * Insert return data.
      *
      * @param $return_data
      * @return $this
@@ -251,13 +254,12 @@ class ClassMethodEntity extends Entity
     public function dataReturn($return_data)
     {
         if (is_array($return_data)) {
-
             $return_data = array_entity($return_data)->render();
 
-            $this->returnType("array");
+            $this->returnType('array');
         }
 
-        return $this->line("return " . $return_data . ";");
+        return $this->line('return '.$return_data.';');
     }
 
     /**
@@ -272,29 +274,22 @@ class ClassMethodEntity extends Entity
     }
 
     /**
-     * Add line public method
+     * Add line public method.
      *
      * @param string $data
      * @param null $key
      * @return $this
      */
-    public function line($data = "", $key=null)
+    public function line($data = '', $key = null)
     {
         foreach (explode("\n", $data) as $item) {
-
-            if (!is_null($key)) {
-
-                if (!isset($this->lines[$key])) {
-
+            if (! is_null($key)) {
+                if (! isset($this->lines[$key])) {
                     $this->lines[$key] = $item;
-
                 } else {
-
                     $this->lines[$key] .= $item;
                 }
-
             } else {
-
                 $this->lines[] = $item;
             }
         }
@@ -307,9 +302,9 @@ class ClassMethodEntity extends Entity
      * @param  null  $key
      * @return $this
      */
-    public function tab($data = "", $key = null)
+    public function tab($data = '', $key = null)
     {
-        return $this->line("    " . $data, $key);
+        return $this->line('    '.$data, $key);
     }
 
     public function exception()
@@ -320,7 +315,7 @@ class ClassMethodEntity extends Entity
     }
 
     /**
-     * Method name getter
+     * Method name getter.
      *
      * @return string|null
      */
@@ -330,33 +325,26 @@ class ClassMethodEntity extends Entity
     }
 
     /**
-     * Auto doc
+     * Auto doc.
      */
     private function autoDoc()
     {
         $this->doc(function (DocumentorEntity $doc) {
-
             foreach ($this->parameters as $parameter) {
-
                 if (preg_match('/^\.\.\.\$(.*)/', $parameter, $m)) {
-
-                    $doc->tagParam("array", $m[1]);
-                }
-
-                else if (preg_match('/(\$[a-z\_]+)/', $parameter, $m)) {
-
+                    $doc->tagParam('array', $m[1]);
+                } elseif (preg_match('/(\$[a-z\_]+)/', $parameter, $m)) {
                     $doc->tagParam($m[1]);
                 }
             }
 
-            $type = $this->docReturnType ? $this->docReturnType : "void";
+            $type = $this->docReturnType ? $this->docReturnType : 'void';
 
             $type = $this->returnType ? $this->returnType : $type;
 
             $doc->tagReturn($type);
 
             if ($this->exception) {
-
                 $doc->tagThrows("\Exception");
             }
         });
@@ -385,54 +373,48 @@ class ClassMethodEntity extends Entity
     }
 
     /**
-     * Build entity
+     * Build entity.
      *
      * @return string
      */
     protected function build(): string
     {
         if ($this->doc === null) {
-
             $this->autoDoc();
         }
 
         $spaces = $this->space();
 
-        $data = "";
+        $data = '';
 
-        if ($this->doc){
-
+        if ($this->doc) {
             $this->doc->setLevel($this->level);
 
             if ($d = $this->doc->render()) {
-
-                $data .= $d . $this->eol();
+                $data .= $d.$this->eol();
             }
         }
 
-        $data .= $spaces.$this->modifiers . " function " . $this->name . "(" . implode(", ", $this->parameters) . ")". ($this->returnType ? " : " . $this->returnType : "") . $this->eol();
-        $data .= $spaces."{";
+        $data .= $spaces.$this->modifiers.' function '.$this->name.'('.implode(', ', $this->parameters).')'.($this->returnType ? ' : '.$this->returnType : '').$this->eol();
+        $data .= $spaces.'{';
 
         if ($this->data) {
-
-            $data .= $this->eol() . $spaces . str_repeat(" ", 4) . $this->data . $this->eol() . $spaces;
+            $data .= $this->eol().$spaces.str_repeat(' ', 4).$this->data.$this->eol().$spaces;
         }
 
         foreach ($this->lines as $line) {
-
-            if (!$this->compressed) {
-                $data .= $this->eol() . $spaces . str_repeat(" ", 4) . $line;
+            if (! $this->compressed) {
+                $data .= $this->eol().$spaces.str_repeat(' ', 4).$line;
             } else {
                 $data .= $line;
             }
         }
 
-        if (count($this->lines) && !$this->compressed) {
-
-            $data .= $this->eol() . $spaces;
+        if (count($this->lines) && ! $this->compressed) {
+            $data .= $this->eol().$spaces;
         }
 
-        $data .= "}";
+        $data .= '}';
 
         return $data;
     }

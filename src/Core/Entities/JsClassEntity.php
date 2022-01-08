@@ -5,16 +5,15 @@ namespace Bfg\Entity\Core\Entities;
 use Bfg\Entity\Core\Entity;
 
 /**
- * Class JsClassEntity
+ * Class JsClassEntity.
  * @package Bfg\Entity\Core\Entities
  */
-class JsClassEntity extends Entity {
-
+class JsClassEntity extends Entity
+{
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected function build(): string
     {
-
     }
 }

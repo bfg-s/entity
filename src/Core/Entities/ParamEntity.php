@@ -7,14 +7,14 @@ use Bfg\Entity\Core\Entity;
 use Bfg\Entity\Core\EntityPhp;
 
 /**
- * Class ParamEntity
+ * Class ParamEntity.
  * @package Bfg\Entity\Core\Entities
  */
 class ParamEntity extends Entity
 {
     use ParamHelpers;
 
-    const NO_PARAM_VALUE = "__!NO_PARAM_VALUE!__";
+    const NO_PARAM_VALUE = '__!NO_PARAM_VALUE!__';
 
     /**
      * @var array
@@ -22,7 +22,7 @@ class ParamEntity extends Entity
     protected $params = [];
 
     /**
-     * Add custom segment
+     * Add custom segment.
      *
      * @param string $segment
      * @return $this
@@ -43,20 +43,14 @@ class ParamEntity extends Entity
     public function typeParam($type, string $name, $value = self::NO_PARAM_VALUE)
     {
         if (is_object($type)) {
-
             $type = get_class($type);
-        }
-
-        else {
-
-            $type = (string)$type;
+        } else {
+            $type = (string) $type;
         }
 
         if ($type !== 'array' && $type !== 'callable' && $type !== 'self' && $type !== 'bool' && $type !== 'boolean' && $type !== 'float' && $type !== 'int' && $type !== 'string' && $type !== 'iterable' && $type !== 'object') {
-
             if (class_exists($type) || preg_match('/^[^\\\\]([A-Za-z\\\\]+)\\\\([A-Za-z]+)$/', $type)) {
-
-                $type = "\\" . $type;
+                $type = '\\'.$type;
             }
         }
 
@@ -89,16 +83,14 @@ class ParamEntity extends Entity
     }
 
     /**
-     * Build entity
+     * Build entity.
      *
      * @return string
      */
     protected function build(): string
     {
-        return implode(", ", array_map(function ($item) {
-
+        return implode(', ', array_map(function ($item) {
             return $this->{$item['method']}($item);
-
         }, $this->params));
     }
 
@@ -117,7 +109,7 @@ class ParamEntity extends Entity
      */
     private function type_param(array $data)
     {
-        return "{$data['type']} \${$data['name']}" . ($data['value'] !== self::NO_PARAM_VALUE ? " = {$this->valueAdapter($data['value'])}" : "");
+        return "{$data['type']} \${$data['name']}".($data['value'] !== self::NO_PARAM_VALUE ? " = {$this->valueAdapter($data['value'])}" : '');
     }
 
     /**
@@ -135,7 +127,7 @@ class ParamEntity extends Entity
      */
     private function no_type_param(array $data)
     {
-        return "\${$data['name']}" . ($data['value'] !== self::NO_PARAM_VALUE ? " = {$this->valueAdapter($data['value'])}" : "");
+        return "\${$data['name']}".($data['value'] !== self::NO_PARAM_VALUE ? " = {$this->valueAdapter($data['value'])}" : '');
     }
 
     /**
@@ -145,17 +137,10 @@ class ParamEntity extends Entity
     private function valueAdapter($value)
     {
         if (is_null($value) || $value === true || $value === false || is_array($value)) {
-
             return EntityPhp::create($value)->render();
-        }
-
-        else if (is_int($value) || is_double($value) || is_float($value)) {
-
+        } elseif (is_int($value) || is_float($value) || is_float($value)) {
             return $value;
-        }
-
-        else {
-
+        } else {
             return "\"{$value}\"";
         }
     }

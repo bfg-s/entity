@@ -2,41 +2,41 @@
 
 namespace Bfg\Entity\Core\Entities;
 
-use Illuminate\Support\Str;
 use Bfg\Entity\Core\Entity;
 use Bfg\Entity\Core\EntityPhp;
 use Bfg\Entity\Core\Traits\HaveDocumentatorEntity;
+use Illuminate\Support\Str;
 
 /**
- * Class ClassPropertyEntity
+ * Class ClassPropertyEntity.
  * @package Bfg\Entity\Core\Entities
  */
 class ClassPropertyEntity extends Entity
 {
     use HaveDocumentatorEntity;
 
-    const NONE_PARAM = "__!NONE!__";
+    const NONE_PARAM = '__!NONE!__';
 
     /**
-     * Property name
+     * Property name.
      *
      * @var string
      */
     protected $name;
 
     /**
-     * Property value
+     * Property value.
      *
      * @var null|string
      */
     protected $value = self::NONE_PARAM;
 
     /**
-     * Property modifiers
+     * Property modifiers.
      *
      * @var string
      */
-    protected $modifiers = "public";
+    protected $modifiers = 'public';
 
     /**
      * ClassPropertyEntity constructor.
@@ -46,10 +46,9 @@ class ClassPropertyEntity extends Entity
      */
     public function __construct(string $name, $value = self::NONE_PARAM)
     {
-        $test = explode(":", $name);
+        $test = explode(':', $name);
 
         if (count($test) == 2) {
-
             $this->modifiers = $test[0];
             $name = $test[1];
         }
@@ -59,7 +58,7 @@ class ClassPropertyEntity extends Entity
     }
 
     /**
-     * Update modifier
+     * Update modifier.
      *
      * @param $modifier
      * @return $this
@@ -72,7 +71,7 @@ class ClassPropertyEntity extends Entity
     }
 
     /**
-     * Set new value from property
+     * Set new value from property.
      *
      * @param $value
      * @return $this
@@ -85,7 +84,7 @@ class ClassPropertyEntity extends Entity
     }
 
     /**
-     * Method name getter
+     * Method name getter.
      *
      * @return string|null
      */
@@ -95,73 +94,76 @@ class ClassPropertyEntity extends Entity
     }
 
     /**
-     * Auto doc
+     * Auto doc.
      */
     public function autoDoc()
     {
         $this->doc(function (DocumentorEntity $doc) {
-
-            $doc->name(ucwords($this->modifiers) . " variable " . ucfirst(Str::camel($this->name)));
+            $doc->name(ucwords($this->modifiers).' variable '.ucfirst(Str::camel($this->name)));
 
             $t = gettype($this->value);
 
             try {
-
                 if ($this->value instanceof EntityPhp) {
-
-                    $data = eval("return " . $this->value->render() . ";");
+                    $data = eval('return '.$this->value->render().';');
 
                     $t = gettype($data);
                 }
-
-            }catch (\Exception $exception) {}
+            } catch (\Exception $exception) {
+            }
 
             $doc->tagVar($t);
         });
     }
 
     /**
-     * Build entity
+     * Build entity.
      *
      * @return string
      */
     protected function build(): string
     {
-        if (!$this->doc) {
+        if (! $this->doc) {
             $this->autoDoc();
         }
 
         $spaces = $this->space();
-        $data = "";
+        $data = '';
 
-        if ($this->doc){
-
+        if ($this->doc) {
             $this->doc->setLevel($this->level);
 
             if ($d = $this->doc->render()) {
-
-                $data .= $d . $this->eol();
+                $data .= $d.$this->eol();
             }
         }
 
         $sp = self::NONE_PARAM != $this->value;
 
         if ($this->value instanceof EntityPhp) {
-
             $this->value = $this->value->render();
+        } else {
+            if (is_string($this->value)) {
+                $this->value = '"'.$this->value.'"';
+            }
+            if (is_array($this->value)) {
+                $this->value = array_entity($this->value)->setLevel($this->level)->render();
+            }
+            if ($this->value === true) {
+                $this->value = 'true';
+            }
+            if ($this->value === false) {
+                $this->value = 'false';
+            }
+            if (is_numeric($this->value)) {
+                $this->value = (string) $this->value;
+            }
+            if (! is_string($this->value)) {
+                $this->value = gettype($this->value);
+            }
         }
 
-        else {
-
-            if (is_string($this->value)) $this->value = "\"" . $this->value . "\"";
-            if (is_array($this->value)) $this->value = array_entity($this->value)->setLevel($this->level)->render();
-            if ($this->value === true) $this->value = "true";
-            if ($this->value === false) $this->value = "false";
-            if (is_numeric($this->value)) $this->value = (string)$this->value;
-            if (!is_string($this->value)) $this->value = gettype($this->value);
-        }
-
-        $data .= $spaces . $this->modifiers . " $" . $this->name . ($sp ? " = " . $this->value . ";" : ";");
+        $data .= $spaces.$this->modifiers.' $'.$this->name.($sp ? ' = '.$this->value.';' : ';');
 
         return $data;
     }

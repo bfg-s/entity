@@ -3,11 +3,11 @@
 namespace Bfg\Entity\Core\Wrappers;
 
 /**
- * Class CommentWrapper
+ * Class CommentWrapper.
  * @package Bfg\Entity\Core\Wrappers
  */
-class CommentWrapper extends Wrapper {
-
+class CommentWrapper extends Wrapper
+{
     /**
      * @param string $data
      * @return string
@@ -17,20 +17,15 @@ class CommentWrapper extends Wrapper {
         $lines = explode("\n", $data);
 
         if (count($lines) > 1) {
-
-            $return = $this->space() . "/*" . $this->eol();
+            $return = $this->space().'/*'.$this->eol();
 
             foreach ($lines as $item) {
-
-                $return .= $this->space() . $item . $this->eol();
+                $return .= $this->space().$item.$this->eol();
             }
 
-            return $return . $this->space() . "*/";
-        }
-
-        else {
-
-            return $this->space() . "// " . $lines[0];
+            return $return.$this->space().'*/';
+        } else {
+            return $this->space().'// '.$lines[0];
         }
     }
 }

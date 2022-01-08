@@ -3,10 +3,9 @@
 namespace Bfg\Entity;
 
 /**
- * Class Entity
+ * Class Entity.
  * @package Bfg\Entity
  */
 class Entity
 {
-
 }

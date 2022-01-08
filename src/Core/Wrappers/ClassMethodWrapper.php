@@ -5,7 +5,7 @@ namespace Bfg\Entity\Core\Wrappers;
 use Bfg\Entity\Core\Entities\ClassMethodEntity;
 
 /**
- * Class ClassMethodWrapper
+ * Class ClassMethodWrapper.
  * @package Bfg\Entity\Core\Wrappers
  */
 class ClassMethodWrapper extends Wrapper
@@ -23,13 +23,9 @@ class ClassMethodWrapper extends Wrapper
     public function __construct($name)
     {
         if ($name instanceof ClassMethodEntity) {
-
             $this->method = $name;
-        }
-
-        else {
-
-            $this->method = class_method_entity((string)$name);
+        } else {
+            $this->method = class_method_entity((string) $name);
         }
     }
 

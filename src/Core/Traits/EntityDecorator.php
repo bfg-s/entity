@@ -3,20 +3,20 @@
 namespace Bfg\Entity\Core\Traits;
 
 /**
- * Trait EntityDecorator
+ * Trait EntityDecorator.
  * @package Bfg\Entity\Core\Traits
  */
 trait EntityDecorator
 {
     /**
-     * Level counter for tab spaces
+     * Level counter for tab spaces.
      *
      * @var int
      */
     protected $level = 0;
 
     /**
-     * Add Tab
+     * Add Tab.
      *
      * @param int $spaces
      * @return $this
@@ -40,28 +40,28 @@ trait EntityDecorator
     }
 
     /**
-     * Spaces getter
+     * Spaces getter.
      *
      * @param int $x
      * @return string
      */
     public function space()
     {
-        return str_repeat(" ", $this->level);
+        return str_repeat(' ', $this->level);
     }
 
     /**
-     * Get tab space
+     * Get tab space.
      *
      * @return string
      */
     public function tabulation()
     {
-        return "    ";
+        return '    ';
     }
 
     /**
-     * Get new line constant
+     * Get new line constant.
      *
      * @return string
      */

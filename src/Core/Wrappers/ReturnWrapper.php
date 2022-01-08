@@ -3,11 +3,11 @@
 namespace Bfg\Entity\Core\Wrappers;
 
 /**
- * Class ReturnWrapper
+ * Class ReturnWrapper.
  * @package Bfg\Entity\Core\Wrappers
  */
-class ReturnWrapper extends Wrapper {
-
+class ReturnWrapper extends Wrapper
+{
     /**
      * @param string $data
      * @return string

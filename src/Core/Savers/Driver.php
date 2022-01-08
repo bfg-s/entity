@@ -2,7 +2,6 @@
 
 namespace Bfg\Entity\Core\Savers;
 
-use Illuminate\Contracts\Support\Renderable;
 use Bfg\Entity\Core\Savers\Modes\ClassMode;
 use Bfg\Entity\Core\Savers\Modes\ConstantMode;
 use Bfg\Entity\Core\Savers\Modes\FileMode;
@@ -12,26 +11,27 @@ use Bfg\Entity\Core\Savers\Modes\MethodMode;
 use Bfg\Entity\Core\Savers\Modes\ObjectMode;
 use Bfg\Entity\Core\Savers\Modes\ParameterMode;
 use Bfg\Entity\Core\Savers\Modes\PropertyMode;
+use Illuminate\Contracts\Support\Renderable;
 
 /**
- * Class Driver
+ * Class Driver.
  * @package Bfg\Entity\Core\Savers
  */
-abstract class Driver {
-
+abstract class Driver
+{
     /**
      * @var array
      */
     protected static $modes = [
-        "class" => ClassMode::class,
-        "constant" => ConstantMode::class,
-        "file" => FileMode::class,
-        "function_abstract" => FunctionAbstractMode::class,
-        "function" => FunctionMode::class,
-        "method" => MethodMode::class,
-        "object" => ObjectMode::class,
-        "parameter" => ParameterMode::class,
-        "property" => PropertyMode::class
+        'class' => ClassMode::class,
+        'constant' => ConstantMode::class,
+        'file' => FileMode::class,
+        'function_abstract' => FunctionAbstractMode::class,
+        'function' => FunctionMode::class,
+        'method' => MethodMode::class,
+        'object' => ObjectMode::class,
+        'parameter' => ParameterMode::class,
+        'property' => PropertyMode::class,
     ];
 
     /**
@@ -64,139 +64,99 @@ abstract class Driver {
      * @return $this
      * @throws \ReflectionException
      */
-    public function setSubject($subject) {
-
+    public function setSubject($subject)
+    {
         if ($subject instanceof \ReflectionClassConstant) {
-
-            if (!$this->ref) {
-
+            if (! $this->ref) {
                 $this->ref = $subject;
 
-                $this->mode = "constant";
+                $this->mode = 'constant';
             }
 
             $subject = $subject->getDeclaringClass();
-        }
-
-        else if ($subject instanceof \ReflectionMethod) {
-
-            if (!$this->ref) {
-
+        } elseif ($subject instanceof \ReflectionMethod) {
+            if (! $this->ref) {
                 $this->ref = $subject;
 
-                $this->mode = "method";
+                $this->mode = 'method';
             }
 
             $subject = $subject->getDeclaringClass();
-        }
-
-        else if ($subject instanceof \ReflectionParameter) {
-
-            if (!$this->ref) {
-
+        } elseif ($subject instanceof \ReflectionParameter) {
+            if (! $this->ref) {
                 $this->ref = $subject;
 
-                $this->mode = "parameter";
+                $this->mode = 'parameter';
             }
 
             $subject = $subject->getDeclaringClass() || $subject->getDeclaringFunction();
-        }
-
-        else if ($subject instanceof \ReflectionProperty) {
-
-            if (!$this->ref) {
-
+        } elseif ($subject instanceof \ReflectionProperty) {
+            if (! $this->ref) {
                 $this->ref = $subject;
 
-                $this->mode = "property";
+                $this->mode = 'property';
             }
 
             $subject = $subject->getDeclaringClass();
         }
 
-
         if ($subject instanceof \ReflectionFunction) {
-
-            if (!$this->ref) {
-
+            if (! $this->ref) {
                 $this->ref = $subject;
 
-                $this->mode = "function";
+                $this->mode = 'function';
             }
 
             $subject = $subject->getFileName();
-        }
-
-        else if ($subject instanceof \ReflectionClass) {
-
-            if (!$this->ref) {
-
+        } elseif ($subject instanceof \ReflectionClass) {
+            if (! $this->ref) {
                 $this->ref = $subject;
 
-                $this->mode = "class";
+                $this->mode = 'class';
             }
 
             $subject = $subject->getFileName();
-        }
-
-        else if ($subject instanceof \ReflectionFunctionAbstract) {
-
-            if (!$this->ref) {
-
+        } elseif ($subject instanceof \ReflectionFunctionAbstract) {
+            if (! $this->ref) {
                 $this->ref = $subject;
 
-                $this->mode = "function_abstract";
+                $this->mode = 'function_abstract';
             }
 
             $subject = $subject->getFileName();
-        }
-
-        else if ($subject instanceof \ReflectionObject) {
-
-            if (!$this->ref) {
-
+        } elseif ($subject instanceof \ReflectionObject) {
+            if (! $this->ref) {
                 $this->ref = $subject;
 
-                $this->mode = "object";
+                $this->mode = 'object';
             }
 
             $subject = $subject->getFileName();
-        }
-
-        else if ($subject instanceof \Closure) {
-
+        } elseif ($subject instanceof \Closure) {
             $ref = new \ReflectionFunction($subject);
 
             $subject = $ref->getFileName();
 
-            if (!$this->ref) {
-
+            if (! $this->ref) {
                 $this->ref = $ref;
 
-                $this->mode = "function";
+                $this->mode = 'function';
             }
-        }
-
-        else if (is_object($subject) || class_exists($subject)) {
-
+        } elseif (is_object($subject) || class_exists($subject)) {
             $ref = new \ReflectionClass($subject);
 
             $subject = $ref->getFileName();
 
-            if (!$this->ref) {
-
+            if (! $this->ref) {
                 $this->ref = $ref;
 
-                $this->mode = "class";
+                $this->mode = 'class';
             }
+        } else {
+            $this->mode = 'file';
         }
 
-        else {
-
-            $this->mode = "file";
-        }
-
-        $this->file = (string)$subject;
+        $this->file = (string) $subject;
 
         return $this;
     }
@@ -209,13 +169,9 @@ abstract class Driver {
     public function setData($data, array $position)
     {
         if ($data instanceof Renderable) {
-
             $this->data = $data->render();
-        }
-
-        else {
-
-            $this->data = (string)$data;
+        } else {
+            $this->data = (string) $data;
         }
 
         $this->position = $position;
@@ -229,7 +185,6 @@ abstract class Driver {
     public function getData()
     {
         if ($this->mode && isset(static::$modes[$this->mode])) {
-
             $this->data = static::$modes[$this->mode]::create($this->data)
                 ->position($this->position)
                 ->file($this->file)
@@ -241,7 +196,7 @@ abstract class Driver {
     }
 
     /**
-     * Save method
+     * Save method.
      * @return int
      */
     abstract public function save() : int;

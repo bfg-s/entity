@@ -7,7 +7,7 @@ use Bfg\Entity\Core\Entity;
 use Bfg\Entity\Core\Traits\HaveDocumentatorEntity;
 
 /**
- * Class NamespaceEntity
+ * Class NamespaceEntity.
  * @package Bfg\Entity\Core\Entities
  */
 class NamespaceEntity extends Entity
@@ -15,14 +15,14 @@ class NamespaceEntity extends Entity
     use HaveDocumentatorEntity, NamespaceHelpers;
 
     /**
-     * Namespace name
+     * Namespace name.
      *
      * @var string
      */
     protected $name;
 
     /**
-     * Namespace objects collection
+     * Namespace objects collection.
      *
      * @var array
      */
@@ -39,7 +39,7 @@ class NamespaceEntity extends Entity
     }
 
     /**
-     * Add object in to namespace area
+     * Add object in to namespace area.
      *
      * @param string|ClassEntity $name
      * @param \Closure|array|null $call
@@ -48,16 +48,11 @@ class NamespaceEntity extends Entity
     public function class($name, $call = null)
     {
         if ($name instanceof ClassEntity) {
-
             $this->objects[$name->getName()] = $name;
-        }
-
-        else if (is_string($name)) {
-
+        } elseif (is_string($name)) {
             $object = new ClassEntity($name);
 
             if (is_callable($call)) {
-
                 call_user_func($call, $object);
             }
 
@@ -70,35 +65,33 @@ class NamespaceEntity extends Entity
     }
 
     /**
-     * Build entity
+     * Build entity.
      *
      * @return string
      */
     protected function build(): string
     {
         $spaces = $this->space();
-        $data = "";
+        $data = '';
 
-        if ($this->doc){
-
+        if ($this->doc) {
             $this->doc->setLevel($this->level);
 
             if ($d = $this->doc->render()) {
-
-                $data .= $d . $this->eol();
+                $data .= $d.$this->eol();
             }
         }
 
-        $data .= $spaces . "namespace " . $this->name . " {" . $this->eol() . $this->eol();
+        $data .= $spaces.'namespace '.$this->name.' {'.$this->eol().$this->eol();
 
         foreach ($this->objects as $object) {
 
             /** @var ClassEntity $object */
             $object->setLevel($this->level + 4);
-            $data .= $object->render() . $this->eol() . $this->eol();
+            $data .= $object->render().$this->eol().$this->eol();
         }
 
-        $data .= $spaces . "}" . $this->eol();
+        $data .= $spaces.'}'.$this->eol();
 
         return $data;
     }

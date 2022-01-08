@@ -2,26 +2,26 @@
 
 namespace Bfg\Entity\Core\Wrappers;
 
-use Illuminate\Contracts\Support\Renderable;
 use Bfg\Entity\Core\Traits\EntityDecorator;
+use Illuminate\Contracts\Support\Renderable;
 
 /**
- * Class Wrapper
+ * Class Wrapper.
  * @package Bfg\Entity\Core\Wrappers
  */
-abstract class Wrapper implements Renderable {
-
+abstract class Wrapper implements Renderable
+{
     use EntityDecorator;
 
     /**
      * @var string
      */
-    protected $data = "";
+    protected $data = '';
 
     /**
      * @var string
      */
-    protected $space = "";
+    protected $space = '';
 
     /**
      * @param $data
@@ -30,7 +30,6 @@ abstract class Wrapper implements Renderable {
     public function createData($data)
     {
         if ($data instanceof Renderable) {
-
             $data = $data->render();
         }
 
@@ -57,10 +56,8 @@ abstract class Wrapper implements Renderable {
         $return = explode("\n", $this->wrap($this->data));
 
         foreach ($return as $key => $item) {
-
-            if (!empty(str_replace(' ', '', $item))) {
-
-                $return[$key] = $this->space() . $item;
+            if (! empty(str_replace(' ', '', $item))) {
+                $return[$key] = $this->space().$item;
             }
         }
 
@@ -71,8 +68,8 @@ abstract class Wrapper implements Renderable {
      * @param array $props
      * @return Wrapper
      */
-    public static function create(...$props) {
-
+    public static function create(...$props)
+    {
         return new static(...$props);
     }
 
@@ -80,5 +77,5 @@ abstract class Wrapper implements Renderable {
      * @param string $data
      * @return string
      */
-    abstract protected function wrap (string $data) : string;
+    abstract protected function wrap(string $data) : string;
 }

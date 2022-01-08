@@ -6,7 +6,7 @@ use Bfg\Entity\Core\Entities\Helpers\DocumentorHelper;
 use Bfg\Entity\Core\Entity;
 
 /**
- * Class DocumentorEntity
+ * Class DocumentorEntity.
  * @package Bfg\Entity\Core\Entities
  */
 class DocumentorEntity extends Entity
@@ -14,28 +14,28 @@ class DocumentorEntity extends Entity
     use DocumentorHelper;
 
     /**
-     * Doc name
+     * Doc name.
      *
      * @var null|string
      */
     protected $doc_name = null;
 
     /**
-     * Doc description
+     * Doc description.
      *
      * @var null|string
      */
     protected $doc_description = null;
 
     /**
-     * Doc entity collection
+     * Doc entity collection.
      *
      * @var array
      */
     protected $docs = [];
 
     /**
-     * Add doc name
+     * Add doc name.
      *
      * @param $name
      * @return $this
@@ -48,7 +48,7 @@ class DocumentorEntity extends Entity
     }
 
     /**
-     * Add doc description
+     * Add doc description.
      *
      * @param $description
      * @return $this
@@ -69,7 +69,7 @@ class DocumentorEntity extends Entity
      */
     public function tagApi()
     {
-        $this->docs["api"][] = "";
+        $this->docs['api'][] = '';
 
         return $this;
     }
@@ -82,7 +82,7 @@ class DocumentorEntity extends Entity
      */
     public function tagAbstract()
     {
-        $this->docs["abstract"][] = "";
+        $this->docs['abstract'][] = '';
 
         return $this;
     }
@@ -95,7 +95,7 @@ class DocumentorEntity extends Entity
      */
     public function tagAccess($modifiers)
     {
-        $this->docs["access"][] = is_array($modifiers) ? implode("|", $modifiers) : $modifiers;
+        $this->docs['access'][] = is_array($modifiers) ? implode('|', $modifiers) : $modifiers;
 
         return $this;
     }
@@ -110,7 +110,7 @@ class DocumentorEntity extends Entity
      */
     public function tagAuthor($name, $email = null)
     {
-        $this->docs["author"][] = $name . ($email ? " <" . $email . ">" : "");
+        $this->docs['author'][] = $name.($email ? ' <'.$email.'>' : '');
 
         return $this;
     }
@@ -125,7 +125,7 @@ class DocumentorEntity extends Entity
      */
     public function tagCopyright($year, $copyright = null)
     {
-        $this->docs["copyright"][] = $year . ($copyright ? " " . $copyright : "");
+        $this->docs['copyright'][] = $year.($copyright ? ' '.$copyright : '');
 
         return $this;
     }
@@ -140,7 +140,7 @@ class DocumentorEntity extends Entity
      */
     public function tagDeprecated($comment)
     {
-        $this->docs["deprecated"][] = $comment;
+        $this->docs['deprecated'][] = $comment;
 
         return $this;
     }
@@ -154,7 +154,7 @@ class DocumentorEntity extends Entity
      */
     public function tagExample($comment)
     {
-        $this->docs["example"][] = $comment;
+        $this->docs['example'][] = $comment;
 
         return $this;
     }
@@ -168,7 +168,7 @@ class DocumentorEntity extends Entity
      */
     public function tagFilesource()
     {
-        $this->docs["filesource"][] = "";
+        $this->docs['filesource'][] = '';
 
         return $this;
     }
@@ -184,7 +184,7 @@ class DocumentorEntity extends Entity
      */
     public function tagInternal($description)
     {
-        $this->docs["internal"][] = $description;
+        $this->docs['internal'][] = $description;
 
         return $this;
     }
@@ -199,7 +199,7 @@ class DocumentorEntity extends Entity
      */
     public function tagLicense($url, $name = null)
     {
-        $this->docs["license"][] = $url.($name ? " " . $name: "");
+        $this->docs['license'][] = $url.($name ? ' '.$name : '');
 
         return $this;
     }
@@ -215,7 +215,7 @@ class DocumentorEntity extends Entity
      */
     public function tagMethod($type, $method, $description = null)
     {
-        $this->docs["method"][] = $type . " " . $method . ($description ? " " . $description : "");
+        $this->docs['method'][] = $type.' '.$method.($description ? ' '.$description : '');
 
         return $this;
     }
@@ -229,7 +229,7 @@ class DocumentorEntity extends Entity
      */
     public function tagPackage($namespace)
     {
-        $this->docs["package"][] = $namespace;
+        $this->docs['package'][] = $namespace;
 
         return $this;
     }
@@ -243,11 +243,13 @@ class DocumentorEntity extends Entity
      * @param null $description
      * @return $this
      */
-    public function tagParam($type, $param = "", $description = null)
+    public function tagParam($type, $param = '', $description = null)
     {
-        if($type == "Closure" || preg_match('/^[^\\\\]([A-Za-z\\\\]+)\\\\([A-Za-z]+)$/', $type)) $type = "\\" . $type;
+        if ($type == 'Closure' || preg_match('/^[^\\\\]([A-Za-z\\\\]+)\\\\([A-Za-z]+)$/', $type)) {
+            $type = '\\'.$type;
+        }
 
-        $this->docs["param"][] = $type . (!empty($param) ? " $" . $param : "") . ($description ? " " . $description : "");
+        $this->docs['param'][] = $type.(! empty($param) ? ' $'.$param : '').($description ? ' '.$description : '');
 
         return $this;
     }
@@ -261,9 +263,9 @@ class DocumentorEntity extends Entity
      * @param null $description
      * @return $this
      */
-    public function tagProperty($type, $param = "", $description = null)
+    public function tagProperty($type, $param = '', $description = null)
     {
-        $this->docs["property"][] = $type . (!empty($param) ? " $" . $param : "") . ($description ? " " . $description : "");
+        $this->docs['property'][] = $type.(! empty($param) ? ' $'.$param : '').($description ? ' '.$description : '');
 
         return $this;
     }
@@ -277,9 +279,9 @@ class DocumentorEntity extends Entity
      * @param null $description
      * @return $this
      */
-    public function tagPropertyRead($type, $param = "", $description = null)
+    public function tagPropertyRead($type, $param = '', $description = null)
     {
-        $this->docs["property-read"][] = $type . (!empty($param) ? " $" . $param : "") . ($description ? " " . $description : "");
+        $this->docs['property-read'][] = $type.(! empty($param) ? ' $'.$param : '').($description ? ' '.$description : '');
 
         return $this;
     }
@@ -293,9 +295,9 @@ class DocumentorEntity extends Entity
      * @param null $description
      * @return $this
      */
-    public function tagPropertyWrite($type, $param = "", $description = null)
+    public function tagPropertyWrite($type, $param = '', $description = null)
     {
-        $this->docs["property-write"][] = $type . (!empty($param) ? " $" . $param : "") . ($description ? " " . $description : "");
+        $this->docs['property-write'][] = $type.(! empty($param) ? ' $'.$param : '').($description ? ' '.$description : '');
 
         return $this;
     }
@@ -310,7 +312,7 @@ class DocumentorEntity extends Entity
      */
     public function tagReturn($type, $description = null)
     {
-        $this->docs["return"][] = $type . ($description ? " " . $description: "");
+        $this->docs['return'][] = $type.($description ? ' '.$description : '');
 
         return $this;
     }
@@ -325,7 +327,7 @@ class DocumentorEntity extends Entity
      */
     public function tagSee($subject, $description = null)
     {
-        $this->docs["see"][] = $subject . ($description ? " " . $description: "");
+        $this->docs['see'][] = $subject.($description ? ' '.$description : '');
 
         return $this;
     }
@@ -340,7 +342,7 @@ class DocumentorEntity extends Entity
      */
     public function tagSince($version, $description = null)
     {
-        $this->docs["since"][] = $version . ($description ? " " . $description: "");
+        $this->docs['since'][] = $version.($description ? ' '.$description : '');
 
         return $this;
     }
@@ -356,7 +358,7 @@ class DocumentorEntity extends Entity
      */
     public function tagSource($start_line, $numbers_of_lines, $description = null)
     {
-        $this->docs["source"][] = $start_line . " " . $numbers_of_lines . ($description ? " " . $description: "");
+        $this->docs['source'][] = $start_line.' '.$numbers_of_lines.($description ? ' '.$description : '');
 
         return $this;
     }
@@ -371,7 +373,7 @@ class DocumentorEntity extends Entity
      */
     public function tagThrows($type, $description = null)
     {
-        $this->docs["throws"][] = $type . ($description ? " " . $description: "");
+        $this->docs['throws'][] = $type.($description ? ' '.$description : '');
 
         return $this;
     }
@@ -384,7 +386,7 @@ class DocumentorEntity extends Entity
      */
     public function tagTodo($description)
     {
-        $this->docs["todo"][] = $description;
+        $this->docs['todo'][] = $description;
 
         return $this;
     }
@@ -399,7 +401,7 @@ class DocumentorEntity extends Entity
      */
     public function tagUses($fqsen, $description = null)
     {
-        $this->docs["uses"][] = $fqsen . ($description ? " " . $description: "");
+        $this->docs['uses'][] = $fqsen.($description ? ' '.$description : '');
 
         return $this;
     }
@@ -414,7 +416,7 @@ class DocumentorEntity extends Entity
      */
     public function tagUsesBy($fqsen, $description = null)
     {
-        $this->docs["uses-by"][] = $fqsen . ($description ? " " . $description: "");
+        $this->docs['uses-by'][] = $fqsen.($description ? ' '.$description : '');
 
         return $this;
     }
@@ -430,7 +432,7 @@ class DocumentorEntity extends Entity
      */
     public function tagVar($type, $param = null, $description = null)
     {
-        $this->docs["var"][] = $type . ($param ? " $" . $param : "") . ($description ? " " . $description : "");
+        $this->docs['var'][] = $type.($param ? ' $'.$param : '').($description ? ' '.$description : '');
 
         return $this;
     }
@@ -445,13 +447,13 @@ class DocumentorEntity extends Entity
      */
     public function tagVersion($vector, $description = null)
     {
-        $this->docs["version"][] = $vector . ($description ? " " . $description: "");
+        $this->docs['version'][] = $vector.($description ? ' '.$description : '');
 
         return $this;
     }
 
     /**
-     * Add custom tag
+     * Add custom tag.
      *
      * @param $tag_name
      * @param null $tag_data
@@ -459,7 +461,7 @@ class DocumentorEntity extends Entity
      */
     public function tagCustom($tag_name, $tag_data = null)
     {
-        $this->docs[$tag_name][] = $tag_data ? $tag_data : "";
+        $this->docs[$tag_name][] = $tag_data ? $tag_data : '';
 
         return $this;
     }
@@ -475,7 +477,7 @@ class DocumentorEntity extends Entity
     }
 
     /**
-     * Magic call
+     * Magic call.
      *
      * @param $name
      * @param $arguments
@@ -485,47 +487,42 @@ class DocumentorEntity extends Entity
     public function __call($name, $arguments)
     {
         if (preg_match('/^tag([A-Z][A-Za-z\_]+)$/', $name, $m)) {
-
-            return $this->tagCustom(strtolower($m[1]), implode(" ", $arguments));
+            return $this->tagCustom(strtolower($m[1]), implode(' ', $arguments));
         }
 
         return $this;
     }
 
     /**
-     * Build entity
+     * Build entity.
      *
      * @return string
      */
     protected function build(): string
     {
         $spaces = $this->space();
-        $begin = $spaces." * ";
-        $data = $spaces."/**" . $this->eol();
+        $begin = $spaces.' * ';
+        $data = $spaces.'/**'.$this->eol();
         $has = false;
 
         if ($this->doc_name) {
-
-            $data .= $begin . $this->doc_name . $this->eol();
+            $data .= $begin.$this->doc_name.$this->eol();
             $has = true;
         }
 
         if ($this->doc_description) {
-
-            $data .= $begin . $this->doc_description . $this->eol();
+            $data .= $begin.$this->doc_description.$this->eol();
             $has = true;
         }
 
         foreach ($this->docs as $tag => $docers) {
-
             foreach ($docers as $docer) {
-
-                $data .= $begin . "@" . $tag . " " . $docer . $this->eol();
+                $data .= $begin.'@'.$tag.' '.$docer.$this->eol();
                 $has = true;
             }
         }
-        $data .= $spaces." */";
+        $data .= $spaces.' */';
 
-        return $has ? $data : "";
+        return $has ? $data : '';
     }
 }

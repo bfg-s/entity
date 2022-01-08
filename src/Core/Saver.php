@@ -2,23 +2,23 @@
 
 namespace Bfg\Entity\Core;
 
-use Illuminate\Contracts\Support\Renderable;
 use Bfg\Entity\Core\Savers\Driver;
 use Bfg\Entity\Core\Savers\File;
+use Illuminate\Contracts\Support\Renderable;
 
 /**
- * Class Saver
+ * Class Saver.
  * @package Bfg\Entity\Core
  */
-final class Saver  {
-
+final class Saver
+{
     /**
-     * Saver type list
+     * Saver type list.
      *
      * @var array
      */
     protected static $savers = [
-        "file" => File::class
+        'file' => File::class,
     ];
 
     /**
@@ -34,7 +34,7 @@ final class Saver  {
     /**
      * @var array
      */
-    private $insert_mode = ["mode" => "append", "line" => null];
+    private $insert_mode = ['mode' => 'append', 'line' => null];
 
     /**
      * Saver constructor.
@@ -43,17 +43,13 @@ final class Saver  {
      * @param string $saver
      * @throws \Exception
      */
-    public function __construct($save_subject, string $saver = "file")
+    public function __construct($save_subject, string $saver = 'file')
     {
         $this->save_subject = $save_subject;
 
-        if (!static::$savers[$saver]) {
-
+        if (! static::$savers[$saver]) {
             throw new \Exception("Saver [{$saver}] not found!");
-        }
-
-        else {
-
+        } else {
             $this->saver = new static::$savers[$saver];
         }
 
@@ -65,7 +61,7 @@ final class Saver  {
      */
     public function prepend()
     {
-        $this->insert_mode["mode"] = "prepend";
+        $this->insert_mode['mode'] = 'prepend';
 
         return $this;
     }
@@ -76,9 +72,9 @@ final class Saver  {
      */
     public function before($line)
     {
-        $this->insert_mode["mode"] = "before";
+        $this->insert_mode['mode'] = 'before';
 
-        $this->insert_mode["line"] = $line;
+        $this->insert_mode['line'] = $line;
 
         return $this;
     }
@@ -89,9 +85,9 @@ final class Saver  {
      */
     public function after($line)
     {
-        $this->insert_mode["mode"] = "after";
+        $this->insert_mode['mode'] = 'after';
 
-        $this->insert_mode["line"] = $line;
+        $this->insert_mode['line'] = $line;
 
         return $this;
     }
@@ -101,7 +97,7 @@ final class Saver  {
      */
     public function append()
     {
-        $this->insert_mode["mode"] = "append";
+        $this->insert_mode['mode'] = 'append';
 
         return $this;
     }
@@ -118,14 +114,13 @@ final class Saver  {
     }
 
     /**
-     * Run save
+     * Run save.
      * @param null|string|Renderable $data
      * @return int
      */
     public function save($data = null)
     {
         if ($data) {
-
             $this->data($data);
         }
 

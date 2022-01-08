@@ -12,7 +12,7 @@ use Bfg\Entity\Core\Entities\ParamEntity;
 use Bfg\Entity\Core\EntityPhp;
 use Bfg\Entity\Core\Saver;
 
-if (!function_exists('push_to_gitignore')) {
+if (! function_exists('push_to_gitignore')) {
     /**
      * @param  string  $path
      * @return bool
@@ -21,21 +21,21 @@ if (!function_exists('push_to_gitignore')) {
     {
         $gitignore = file_get_contents(base_path('.gitignore'));
 
-        $add_to_ignore = "";
+        $add_to_ignore = '';
 
         if (strpos($gitignore, $path) === false) {
             $add_to_ignore .= "{$path}\n";
         }
 
         if ($add_to_ignore) {
-
-            return !!file_put_contents(base_path('.gitignore'), trim($gitignore) . "\n" . $add_to_ignore);
+            return (bool) file_put_contents(base_path('.gitignore'), trim($gitignore)."\n".$add_to_ignore);
         }
+
         return false;
     }
 }
 
-if (!function_exists('class_in_file')) {
+if (! function_exists('class_in_file')) {
     /**
      * @param  string  $file
      * @return string|null
@@ -46,7 +46,7 @@ if (!function_exists('class_in_file')) {
     }
 }
 
-if (!function_exists('array_export')) {
+if (! function_exists('array_export')) {
     /**
      * @param $expression
      * @return string
@@ -61,65 +61,66 @@ if (!function_exists('array_export')) {
             "/([ ]*)(\'[^\']+\') => ([\[\'])/" => '$1$2 => $3',
         ];
         $export = preg_replace(array_keys($patterns), array_values($patterns), $export);
+
         return $export;
     }
 }
 
-if (!function_exists('entity')) {
+if (! function_exists('entity')) {
     /**
      * @param $data
      * @return EntityPhp
      */
     function entity($data)
     {
-        return (new EntityPhp($data));
+        return new EntityPhp($data);
     }
 }
 
-if (!function_exists('namespace_entity')) {
+if (! function_exists('namespace_entity')) {
     /**
      * @param  string  $name
      * @return NamespaceEntity
      */
     function namespace_entity(string $name)
     {
-        return (new NamespaceEntity($name));
+        return new NamespaceEntity($name);
     }
 }
 
-if (!function_exists('class_entity')) {
+if (! function_exists('class_entity')) {
     /**
      * @param  string  $name
      * @return ClassEntity
      */
     function class_entity(string $name)
     {
-        return (new ClassEntity($name));
+        return new ClassEntity($name);
     }
 }
 
-if (!function_exists('class_method_entity')) {
+if (! function_exists('class_method_entity')) {
     /**
      * @param  string  $name
      * @return ClassMethodEntity
      */
     function class_method_entity(string $name, ClassEntity $parent = null)
     {
-        return (new ClassMethodEntity($name, $parent));
+        return new ClassMethodEntity($name, $parent);
     }
 }
 
-if (!function_exists('param_entity')) {
+if (! function_exists('param_entity')) {
     /**
      * @return ParamEntity
      */
     function param_entity()
     {
-        return (new ParamEntity());
+        return new ParamEntity();
     }
 }
 
-if (!function_exists('class_property_entity')) {
+if (! function_exists('class_property_entity')) {
     /**
      * @param  string  $name
      * @param  string  $value
@@ -127,21 +128,21 @@ if (!function_exists('class_property_entity')) {
      */
     function class_property_entity(string $name, $value = ClassPropertyEntity::NONE_PARAM)
     {
-        return (new ClassPropertyEntity($name, $value));
+        return new ClassPropertyEntity($name, $value);
     }
 }
 
-if (!function_exists('doc_entity')) {
+if (! function_exists('doc_entity')) {
     /**
      * @return DocumentorEntity
      */
     function doc_entity(): DocumentorEntity
     {
-        return (new DocumentorEntity());
+        return new DocumentorEntity();
     }
 }
 
-if (!function_exists('get_doc_var')) {
+if (! function_exists('get_doc_var')) {
     /**
      * @param  string  $doc
      * @param  string  $var_name
@@ -153,18 +154,18 @@ if (!function_exists('get_doc_var')) {
     }
 }
 
-if (!function_exists('array_entity')) {
+if (! function_exists('array_entity')) {
     /**
      * @param $data
      * @return ArrayEntity
      */
     function array_entity($data): ArrayEntity
     {
-        return (new ArrayEntity($data));
+        return new ArrayEntity($data);
     }
 }
 
-if (!function_exists('saver')) {
+if (! function_exists('saver')) {
     /**
      * @param $data
      * @return Saver
@@ -176,9 +177,9 @@ if (!function_exists('saver')) {
     }
 }
 
-if (!function_exists("var_export_array")) {
+if (! function_exists('var_export_array')) {
     /**
-     * Convert array to PHP
+     * Convert array to PHP.
      *
      * @param  array  $data
      * @param  bool  $compress
@@ -191,9 +192,9 @@ if (!function_exists("var_export_array")) {
     }
 }
 
-if (!function_exists("config_file_wrapper")) {
+if (! function_exists('config_file_wrapper')) {
     /**
-     * File config wrapper from save
+     * File config wrapper from save.
      *
      * @param  array  $data
      * @param  bool  $compress
@@ -206,7 +207,7 @@ if (!function_exists("config_file_wrapper")) {
     }
 }
 
-if (!function_exists("pars_description_from_doc")) {
+if (! function_exists('pars_description_from_doc')) {
     /**
      * Pars PHP Doc for getting the description in one line.
      *
@@ -214,13 +215,13 @@ if (!function_exists("pars_description_from_doc")) {
      * @param  string  $glue
      * @return string
      */
-    function pars_description_from_doc($doc, string $glue = " ")
+    function pars_description_from_doc($doc, string $glue = ' ')
     {
         return \Bfg\Entity\Core\Entities\DocumentorEntity::parseDescription($doc, $glue);
     }
 }
 
-if (!function_exists("pars_return_from_doc")) {
+if (! function_exists('pars_return_from_doc')) {
     /**
      * Pars RETURN.
      *
@@ -233,20 +234,20 @@ if (!function_exists("pars_return_from_doc")) {
     }
 }
 
-if (!function_exists('refl_param_entity')) {
+if (! function_exists('refl_param_entity')) {
     /**
      * @param  ReflectionParameter  $item
      * @param  bool  $no_types
      * @param  bool  $no_values
      * @return string
      */
-    function refl_param_entity(\ReflectionParameter $item, $no_types = false, $no_values = false)
+    function refl_param_entity(ReflectionParameter $item, $no_types = false, $no_values = false)
     {
         return \Bfg\Entity\Core\Entities\ParamEntity::buildFromReflection($item, $no_types, $no_values)->render();
     }
 }
 
-if (!function_exists('refl_params_entity')) {
+if (! function_exists('refl_params_entity')) {
     /**
      * @param  array|\ReflectionParameter|\ReflectionFunction|\ReflectionMethod|\Closure  $params
      * @param  bool  $no_types

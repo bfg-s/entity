@@ -5,7 +5,7 @@ namespace Bfg\Entity;
 use Bfg\Installer\Providers\InstalledProvider;
 
 /**
- * Class ServiceProvider
+ * Class ServiceProvider.
  * @package Bfg\Entity
  */
 class ServiceProvider extends InstalledProvider
@@ -21,7 +21,7 @@ class ServiceProvider extends InstalledProvider
      * and the extension is installed.
      * @return void
      */
-    function installed(): void
+    public function installed(): void
     {
         // TODO: Implement installed() method.
     }
@@ -31,9 +31,8 @@ class ServiceProvider extends InstalledProvider
      * "boot" and the extension is installed.
      * @return void
      */
-    function run(): void
+    public function run(): void
     {
         // TODO: Implement run() method.
     }
 }
-

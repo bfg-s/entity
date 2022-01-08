@@ -2,11 +2,11 @@
 
 namespace Bfg\Entity\Core;
 
-use Illuminate\Contracts\Support\Renderable;
 use Bfg\Entity\Core\Entities\ArrayEntity;
+use Illuminate\Contracts\Support\Renderable;
 
 /**
- * Class EntityPhp
+ * Class EntityPhp.
  * @package Bfg\Entity\Core
  */
 class EntityPhp extends Entity
@@ -14,14 +14,14 @@ class EntityPhp extends Entity
     /**
      * @var Renderable|object|string
      */
-    protected $data = "";
+    protected $data = '';
 
     /**
      * EntityPhp constructor.
      *
      * @param Renderable|object|string $data
      */
-    public function __construct($data = "")
+    public function __construct($data = '')
     {
         $this->data = $this->adapter($data);
     }
@@ -35,20 +35,16 @@ class EntityPhp extends Entity
     }
 
     /**
-     * Build entity
+     * Build entity.
      *
      * @return string
      */
     protected function build(): string
     {
         if ($this->data instanceof Renderable) {
-
             $this->data = $this->data->render();
-        }
-
-        else {
-
-            $this->data = (string)$this->data;
+        } else {
+            $this->data = (string) $this->data;
         }
 
         return $this->data;
@@ -61,22 +57,12 @@ class EntityPhp extends Entity
     private function adapter($data)
     {
         if (is_null($data)) {
-
-            $data = "null";
-        }
-
-        else if ($data === true) {
-
-            $data = "true";
-        }
-
-        else if ($data === false) {
-
-            $data = "false";
-        }
-
-        else if (is_array($data)) {
-
+            $data = 'null';
+        } elseif ($data === true) {
+            $data = 'true';
+        } elseif ($data === false) {
+            $data = 'false';
+        } elseif (is_array($data)) {
             $data = ArrayEntity::create($data)->minimized()->render();
         }
 

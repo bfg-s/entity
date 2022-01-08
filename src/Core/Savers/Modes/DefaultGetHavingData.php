@@ -3,7 +3,7 @@
 namespace Bfg\Entity\Core\Savers\Modes;
 
 /**
- * Trait DefaultGetHavingData
+ * Trait DefaultGetHavingData.
  * @package Bfg\Entity\Core\Savers\Modes
  */
 trait DefaultGetHavingData
@@ -14,7 +14,6 @@ trait DefaultGetHavingData
     public function getHavingData(): string
     {
         if ($this->ref && $this->file && is_file($this->file)) {
-
             $this->replace_line_from = $this->ref->getStartLine();
 
             $this->replace_line_to = $this->ref->getEndLine();

@@ -3,7 +3,7 @@
 namespace Bfg\Entity\Core\Savers\Modes;
 
 /**
- * Class FileMode
+ * Class FileMode.
  * @package Bfg\Entity\Core\Savers\Modes
  */
 class FileMode extends Mode
@@ -23,15 +23,14 @@ class FileMode extends Mode
     public function getHavingData(): string
     {
         if (is_file($this->file)) {
-
             return file_get_contents($this->file);
         }
 
-        return "";
+        return '';
     }
 
     /**
-     * Insert data
+     * Insert data.
      *
      * @param string $data
      * @param string $origin

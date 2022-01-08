@@ -3,7 +3,7 @@
 namespace Bfg\Entity\Core\Savers\Modes;
 
 /**
- * Class ObjectMode
+ * Class ObjectMode.
  * @package Bfg\Entity\Core\Savers\Modes
  */
 class ObjectMode extends Mode
@@ -19,11 +19,9 @@ class ObjectMode extends Mode
 
     public function getHavingData(): string
     {
-
     }
 
     protected function insert(string $data, string $origin, string $file_data): string
     {
-
     }
 }
