@@ -15,7 +15,6 @@
     "require": {
         "php": ">=8.0.0",
         "bfg/installer": "*",
-        "bfg/object": "*",
         "bfg/text": "*"
     },
     "require-dev": {},

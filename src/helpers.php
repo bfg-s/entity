@@ -259,3 +259,22 @@ if (! function_exists('refl_params_entity')) {
         return \Bfg\Entity\Core\Entities\ParamEntity::buildFromReflection($params, $no_types, $no_values)->render();
     }
 }
+
+if (! function_exists('array_dots_uncollapse')) {
+    /**
+     * Expand an array folded into a dot array.
+     *
+     * @param  array  $array
+     * @return array
+     */
+    function array_dots_uncollapse(array $array): array
+    {
+        $result = [];
+
+        foreach ($array as $key => $value) {
+            Arr::set($result, $key, $value);
+        }
+
+        return $result;
+    }
+}

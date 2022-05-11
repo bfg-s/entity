@@ -4,6 +4,7 @@ namespace Bfg\Entity\Core\Entities;
 
 use Bfg\Entity\Core\Entity;
 use Bfg\Entity\Core\Traits\HaveDocumentatorEntity;
+use Illuminate\Support\Arr;
 
 /**
  * Class ClassEntity.
@@ -166,7 +167,7 @@ class ClassEntity extends Entity
                 $prop->value($value);
             }
 
-            $this->props[\Arr::last(explode(':', $name))] = $prop;
+            $this->props[Arr::last(explode(':', $name))] = $prop;
 
             return $prop;
         }

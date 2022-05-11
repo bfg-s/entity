@@ -2,6 +2,8 @@
 
 namespace Bfg\Entity;
 
+use Illuminate\Support\Arr;
+
 /**
  * Class ConfigFactory.
  * @package Bfg\Entity
@@ -45,7 +47,7 @@ class ConfigFactory
      */
     public function get(string|array $path, $default = null): mixed
     {
-        return \Arr::get($this->items, implode('.', (array) $path), $default);
+        return Arr::get($this->items, implode('.', (array) $path), $default);
     }
 
     /**
@@ -64,7 +66,7 @@ class ConfigFactory
      */
     public function has($path): bool
     {
-        return \Arr::has($this->items, implode('.', (array) $path));
+        return Arr::has($this->items, implode('.', (array) $path));
     }
 
     /**
@@ -74,7 +76,7 @@ class ConfigFactory
      */
     public function merge(array $array): static
     {
-        $this->items = array_merge($this->items, \Arr::dot($array));
+        $this->items = array_merge($this->items, Arr::dot($array));
 
         return $this;
     }
@@ -87,7 +89,7 @@ class ConfigFactory
      */
     public function set(string|array $path, $value = null): static
     {
-        \Arr::set($this->items, implode('.', (array) $path), $value);
+        Arr::set($this->items, implode('.', (array) $path), $value);
 
         return $this;
     }
@@ -130,7 +132,7 @@ class ConfigFactory
     public function forget($path): static
     {
         if ($this->has($path)) {
-            \Arr::forget($this->items, implode('.', (array) $path));
+            Arr::forget($this->items, implode('.', (array) $path));
         }
 
         return $this;
