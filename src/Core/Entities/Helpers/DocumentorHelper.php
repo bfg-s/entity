@@ -28,10 +28,10 @@ trait DocumentorHelper
         if (preg_match('/\*\s([^\@.]+\n)/m', $doc, $matches)) {
             unset($matches[0]);
 
-            return str_replace(
-                ['* ', '  '], '',
-                trim(str_replace("\n", '', implode($glue, $matches)), '*. ')
-            );
+            return trim(trim(
+                str_replace("\n", '', implode($glue, $matches)),
+                '*. '
+            ), " \t\n\r\0\x0B*");
         }
 
         return '';
