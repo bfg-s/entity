@@ -38,23 +38,21 @@ trait ParamHelpers
         }
 
         $entity = new ParamEntity();
-
-        try {
-            foreach ($params as $param) {
+        foreach ($params as $param) {
+            try {
                 if ($param instanceof \ReflectionParameter) {
                     if ($param->isVariadic()) {
                         $entity->manyParam($param->name);
-                    } elseif ($param->hasType() && ! $no_types) {
+                    } elseif ($param->hasType() && ! $no_types && method_exists($param->getType(), 'getName')) {
                         $entity->typeParam($param->getType()->getName(), $param->name, ($param->isDefaultValueAvailable() && ! $no_values ? $param->getDefaultValue() : ParamEntity::NO_PARAM_VALUE));
                     } else {
                         $entity->param($param->name, ($param->isDefaultValueAvailable() && ! $no_values ? $param->getDefaultValue() : ParamEntity::NO_PARAM_VALUE));
                     }
                 }
+            } catch (\Exception $exception) {
+                \Log::error($exception);
             }
-        } catch (\Exception $exception) {
-            \Log::error($exception);
         }
-
         return $entity;
     }
 }
