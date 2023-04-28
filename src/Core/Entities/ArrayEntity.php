@@ -133,7 +133,7 @@ class ArrayEntity extends Entity
             if ($this->max_chars) {
                 $value = $quot.substr($val, 0, $this->max_chars).(strlen($val) > $this->max_chars ? '...' : '').$quot;
             } else {
-                if ($quot == '"') {
+                if ($quot == '"' && $val) {
                     $val = str_replace('\\', '\\\\', $val);
                     $val = str_replace('$', '\$', $val);
                 }
