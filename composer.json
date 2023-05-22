@@ -14,7 +14,7 @@
     "prefer-stable": true,
     "require": {
         "php": ">=8.0.0",
-        "bfg/text": "*"
+        "bfg/text": "^0.0.4"
     },
     "require-dev": {},
     "autoload": {
