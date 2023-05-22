@@ -272,7 +272,7 @@ if (! function_exists('array_dots_uncollapse')) {
         $result = [];
 
         foreach ($array as $key => $value) {
-            Arr::set($result, $key, $value);
+            \Illuminate\Support\Arr::set($result, $key, $value);
         }
 
         return $result;
