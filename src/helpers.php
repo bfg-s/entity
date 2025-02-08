@@ -102,9 +102,10 @@ if (! function_exists('class_entity')) {
 if (! function_exists('class_method_entity')) {
     /**
      * @param  string  $name
+     * @param  \Bfg\Entity\Core\Entities\ClassEntity|null  $parent
      * @return ClassMethodEntity
      */
-    function class_method_entity(string $name, ClassEntity $parent = null)
+    function class_method_entity(string $name, ClassEntity|null $parent = null)
     {
         return new ClassMethodEntity($name, $parent);
     }
